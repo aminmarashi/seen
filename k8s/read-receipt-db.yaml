@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: read-receipt-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: read-receipt-db
+  template:
+    metadata:
+      labels:
+        app: read-receipt-db
+    spec:
+      containers:
+        - name: read-receipt-db
+          image: postgres:12
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: read-receipt-initdb
+              mountPath: /docker-entrypoint-initdb.d
+          env:
+            - name: POSTGRES_DB
+              value: read-receipt
+            - name: POSTGRES_USER
+              value: read-receipt
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: read-receipt-secret
+                  key: dbpass
+      volumes:
+        - name: read-receipt-initdb
+          configMap:
+            name: read-receipt-initdb-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: read-receipt-initdb-config
+data:
+  initdb.sql: |
+    CREATE TABLE receipts(name VARCHAR(256) PRIMARY KEY);
+    CREATE TABLE receipt_records(receipt VARCHAR(256) REFERENCES receipts(name), record TEXT);
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: read-receipt-db
+  labels:
+    app: read-receipt-db
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+  selector:
+    app: read-receipt-db

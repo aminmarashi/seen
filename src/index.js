@@ -1,39 +1,58 @@
 const express = require('express');
+const pgPromise = require('pg-promise');
 const app = express();
 const port = 8080;
+
+const CONNINFO = {
+    host: process.ENV.DB_HOST,
+    port: process.ENV.DB_PORT,
+    database: process.ENV.DB_NAME,
+    user: process.ENV.DB_USER,
+    password: process.ENV.DB_PASS,
+};
+
+const db = pgPromise(CONNINFO);
 
 app.set('view engine', 'pug');
 
 var pixel = Buffer.from('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', 'base64');
 
-function recordReceipt(receipt, payload) {
-    // Insert the visitor of the receipt to the DB
+async function recordReceipt(receipt, record) {
+    await db.none('INSERT INTO receipt_records(receipt, record) VALUES(${receipt}, ${record})', {
+        receipt,
+        record
+    });   
 }
 
-function receiptExists(receipt) {
+async function receiptExists(receipt) {
     // Check if receipt already exists in the DB
-    return true;
+    return db.any('SELECT * FROM receipts WHERE name = ${receipt}', {
+        receipt
+    });
 }
 
-function createReceipt(receipt) {
+async function createReceipt(receipt) {
     // Create the receipt name in the DB
+    await db.none('INSERT INTO receipts(name) VALUES(${receipt})', {
+        receipt
+    });
 }
 
-function getReceiptStats(receipt) {
+async function getReceiptStats(receipt) {
     // get receipt stats from the DB
-    return [
-        'a','b'
-    ];
+    return db.any('SELECT * FROM receipt_records WHERE receipt = ${receipt}', {
+        receipt
+    });
 }
 
-app.get("/:receipt", function(req, res) {
+app.get("/:receipt", async function(req, res) {
     const receipt = req.params.receipt;
 
-    if (!receiptExists(receipt)) {
+    if (!await receiptExists(receipt)) {
         res.status(404).send('Receipt not found');
     }
 
-    recordReceipt(receipt, JSON.stringify(req.headers));
+    await recordReceipt(receipt, JSON.stringify(req.headers));
 
     res.writeHead(200, {
         'Content-Type': 'image/png',
@@ -43,26 +62,26 @@ app.get("/:receipt", function(req, res) {
     res.end(pixel);
 });
 
-app.get("/stats/:receipt", function(req, res) {
+app.get("/stats/:receipt", async function(req, res) {
     const receipt = req.params.receipt;
 
-    if (!receiptExists(receipt)) {
+    if (!await receiptExists(receipt)) {
         res.status(404).send('Receipt not found');
     }
 
-    const stats = getReceiptStats(receipt);
+    const stats = await getReceiptStats(receipt);
 
     return res.render('index', { stats });
 });
 
-app.get("/create/:receipt", function(req, res) {
+app.get("/create/:receipt", async function(req, res) {
     const receipt = req.params.receipt;
 
-    if (!receiptExists(receipt)) {
+    if (!await receiptExists(receipt)) {
         res.status(409).send('Already exists');
     }
 
-    createReceipt(receipt)
+    await createReceipt(receipt)
 
     res.status(200).send('Receipt successfully created');
 });

@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: read-receipt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: read-receipt
+  template:
+    metadata:
+      labels:
+        app: read-receipt
+    spec:
+      containers:
+        - name: read-receipt
+          image: marashisamin/read-receipt
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: read-receipt-db
+            - name: DB_PORT
+              value: 5432
+            - name: DB_NAME
+              value: read-receipt
+            - name: DB_USER
+              value: read-receipt
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: read-receipt-secret
+                  key: dbpass
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: read-receipt
+  labels:
+    app: read-receipt
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: read-receipt
