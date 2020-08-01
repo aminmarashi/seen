@@ -22,6 +22,8 @@ spec:
           volumeMounts:
             - name: read-receipt-initdb
               mountPath: /docker-entrypoint-initdb.d
+            - mountPath: /var/lib/postgresql/data
+              name: data-dir 
           env:
             - name: POSTGRES_DB
               value: read-receipt
@@ -36,6 +38,9 @@ spec:
         - name: read-receipt-initdb
           configMap:
             name: read-receipt-initdb-config
+        - name: data-dir
+          persistentVolumeClaim:
+            claimName: read-receipt-db-pvc
 ---
 apiVersion: v1
 kind: ConfigMap
