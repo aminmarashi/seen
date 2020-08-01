@@ -55,7 +55,7 @@ app.get("/stats", async function(req, res) {
 
     const stats = await getAllStats();
 
-    res.render('index', { stats, path: req.path.replace(/\/$/, '') });
+    res.render('index', { stats, path: req.path.replace(/\/+$/, '') });
 });
 
 app.get("/stats/:receipt", async function(req, res) {
@@ -67,7 +67,7 @@ app.get("/stats/:receipt", async function(req, res) {
 
     const stats = await getReceiptStats(receipt);
 
-    res.render('index', { stats, path: req.path.replace(`/${receipt}`, '') });
+    res.render('index', { stats, path: req.path.replace(new RegExp(`\/+${receipt}`), '') });
 });
 
 app.get('/:receipt', async function(req, res) {
@@ -90,13 +90,11 @@ app.get('/:receipt', async function(req, res) {
 app.get("/create/:receipt", async function(req, res) {
     const receipt = req.params.receipt;
 
-    if (await receiptExists(receipt)) {
-        return res.status(409).send('Already exists');
+    if (!await receiptExists(receipt)) {
+        await createReceipt(receipt)
     }
 
-    await createReceipt(receipt)
-
-    res.status(200).send('Receipt successfully created');
+    res.status(200).render('create', { receipt, path: req.path.replace(new RegExp(`\/+create\/+${receipt}`), '') });
 });
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
