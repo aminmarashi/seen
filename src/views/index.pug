@@ -5,8 +5,25 @@
         </title>
     </head>
     <body>
-ul
+    <table>
+        <thead>
+            <tr>
+                <th>Receipt</th>
+                <th>User Agent</th>
+                <th>IP Address</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+tr
     each stat in stats
-        li= stat
+        - var record = JSON.parse(stat.record);
+        td
+            a(href=`${path}/${stat.receipt}`)= stat.receipt
+        td= record['user-agent']
+        td= record['cf-connecting-ip']
+        td= stat.timestamp
+        </tbody>
+    </table>
     </body>
 </html>

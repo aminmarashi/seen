@@ -2,9 +2,11 @@ FROM node
 
 WORKDIR /opt
 
-COPY package* index.js ./
+COPY package* ./
 
 RUN npm install
+
+COPY index.js ./
 
 COPY views ./views
 

@@ -4,14 +4,14 @@ const app = express();
 const port = 8080;
 
 const CONNINFO = {
-    host: process.ENV.DB_HOST,
-    port: process.ENV.DB_PORT,
-    database: process.ENV.DB_NAME,
-    user: process.ENV.DB_USER,
-    password: process.ENV.DB_PASS,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
 };
 
-const db = pgPromise(CONNINFO);
+const db = pgPromise()(CONNINFO);
 
 app.set('view engine', 'pug');
 
@@ -26,9 +26,9 @@ async function recordReceipt(receipt, record) {
 
 async function receiptExists(receipt) {
     // Check if receipt already exists in the DB
-    return db.any('SELECT * FROM receipts WHERE name = ${receipt}', {
+    return (await db.any('SELECT * FROM receipts WHERE name = ${receipt}', {
         receipt
-    });
+    })).length > 0;
 }
 
 async function createReceipt(receipt) {
@@ -45,11 +45,36 @@ async function getReceiptStats(receipt) {
     });
 }
 
-app.get("/:receipt", async function(req, res) {
+async function getAllStats() {
+    // get receipt stats from the DB
+    return db.any('SELECT * FROM receipt_records');
+}
+
+app.get("/stats", async function(req, res) {
+    const receipt = req.params.receipt;
+
+    const stats = await getAllStats();
+
+    res.render('index', { stats, path: req.path.replace(/\/$/, '') });
+});
+
+app.get("/stats/:receipt", async function(req, res) {
     const receipt = req.params.receipt;
 
     if (!await receiptExists(receipt)) {
-        res.status(404).send('Receipt not found');
+        return res.status(404).send('Receipt not found');
+    }
+
+    const stats = await getReceiptStats(receipt);
+
+    res.render('index', { stats, path: req.path.replace(`/${receipt}`, '') });
+});
+
+app.get('/:receipt', async function(req, res) {
+    const receipt = req.params.receipt;
+
+    if (!await receiptExists(receipt)) {
+        return res.status(404).send('Receipt not found');
     }
 
     await recordReceipt(receipt, JSON.stringify(req.headers));
@@ -62,23 +87,11 @@ app.get("/:receipt", async function(req, res) {
     res.end(pixel);
 });
 
-app.get("/stats/:receipt", async function(req, res) {
-    const receipt = req.params.receipt;
-
-    if (!await receiptExists(receipt)) {
-        res.status(404).send('Receipt not found');
-    }
-
-    const stats = await getReceiptStats(receipt);
-
-    return res.render('index', { stats });
-});
-
 app.get("/create/:receipt", async function(req, res) {
     const receipt = req.params.receipt;
 
-    if (!await receiptExists(receipt)) {
-        res.status(409).send('Already exists');
+    if (await receiptExists(receipt)) {
+        return res.status(409).send('Already exists');
     }
 
     await createReceipt(receipt)
