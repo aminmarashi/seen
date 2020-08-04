@@ -1,0 +1,29 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: read-receipt-db-pv
+  labels:
+    type: local
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 200Mi
+  local:
+    path: /data/postgres
+  persistentVolumeReclaimPolicy: Retain
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: read-receipt-db-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 200Mi
