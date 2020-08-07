@@ -316,6 +316,8 @@ Resources:
         - !Ref PrivateSubnet02
       ClusterName: !Ref eksCluster
       NodeRole: !GetAtt eksClusterRole.Arn
+      InstanceTypes:
+        - t2.micro
 
 Outputs:
 
