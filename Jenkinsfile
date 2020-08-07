@@ -3,18 +3,10 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'echo "Hello World"'
+                sh 'echo "Deploy K8s"'
                 sh '''
-                    echo "Multiline shell steps works too"
                     cd k8s
                     ./create.sh
-                '''
-            }
-        }
-        stage('Lint HTML') {
-            steps {
-                sh '''
-                    tidy -q -e src/view/*.pug
                 '''
             }
         }
