@@ -10,10 +10,18 @@ spec:
   capacity:
     storage: 200Mi
   local:
-    path: /data/postgres
+    path: /mnt
   persistentVolumeReclaimPolicy: Retain
   accessModes:
     - ReadWriteOnce
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values:
+            - us-west-2a
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
