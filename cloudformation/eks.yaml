@@ -317,7 +317,7 @@ Resources:
       ClusterName: !Ref eksCluster
       NodeRole: !GetAtt eksClusterRole.Arn
       InstanceTypes:
-        - t2.micro
+        - m1.medium
 
 Outputs:
 
