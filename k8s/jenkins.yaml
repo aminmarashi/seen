@@ -1,6 +1,10 @@
 rbac:
   readSecrets: true
 master:
+  csrf:
+    defaultCrumbIssuer:
+      enabled: true
+      proxyCompatability: true
   useSecurity: true
   adminUser: admin
   numExecutors: 1
