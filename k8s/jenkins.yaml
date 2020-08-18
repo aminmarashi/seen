@@ -14,5 +14,22 @@ master:
     - github-branch-source:2.5.8
     - docker-workflow:1.21
     - pipeline-utility-steps:2.3.1
+    - blueocean-rest:1.23.2
+    - blueocean-web:1.23.2
+    - blueocean-jwt:1.23.2
+    - blueocean-pipeline-scm-api:1.23.2
+    - blueocean-rest-impl:1.23.2
+    - blueocean-core-js:1.23.2
+    - blueocean-pipeline-api-impl:1.23.2
+    - blueocean-dashboard:1.23.2
+    - blueocean-git-pipeline:1.23.2
+    - blueocean-github-pipeline:1.23.2
+    - blueocean-display-url:2.3.1
+    - blueocean-config:1.23.2
+    - blueocean-pipeline-editor:1.23.2
+    - blueocean-events:1.23.2
+    - blueocean:1.23.2
+    - blueocean-executor-info:1.23.2
+    - blueocean-commons:1.23.2
   overwritePlugins: true
 
