@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 
 kubectl apply -f eks-nvme-ssd-provisioner.yaml
 kubectl apply -f storage-local-static-provisioner.yaml

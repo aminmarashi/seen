@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Install jenkins
 helm repo add stable https://kubernetes-charts.storage.googleapis.com
 helm install cde-jenkins --values jenkins.yaml stable/jenkins
