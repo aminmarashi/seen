@@ -318,9 +318,21 @@ Resources:
       NodeRole: !GetAtt eksClusterRole.Arn
       InstanceTypes:
         - m1.medium
+  Jenkins:
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: ami-0a634ae95e11c6f91
+      InstanceType: t2.micro
+      SubnetId: !Ref PublicSubnet01
+      UserData: |
+        d2dldCAtcSAtTyAtIGh0dHBzOi8vcGtnLmplbmtpbnMuaW8vZGViaWFuLXN0YWJsZS9qZW5raW5z
+        LmlvLmtleSB8IHN1ZG8gYXB0LWtleSBhZGQgLSAmJgpzdWRvIHNoIC1jICdlY2hvIGRlYiBodHRw
+        czovL3BrZy5qZW5raW5zLmlvL2RlYmlhbi1zdGFibGUgYmluYXJ5LyA+IC9ldGMvYXB0L3NvdXJj
+        ZXMubGlzdC5kL2plbmtpbnMubGlzdCcgJiYKc3VkbyBhcHQtZ2V0IHVwZGF0ZSAmJgpzdWRvIGFw
+        dC1nZXQgaW5zdGFsbCBvcGVuamRrLTgtanJlIC15ICYmCnN1ZG8gYXB0LWdldCBpbnN0YWxsIGpl
+        bmtpbnMgLXkK
 
 Outputs:
-
   SubnetIds:
     Description: Subnets IDs in the VPC
     Value: !Join [ ",", [ !Ref PublicSubnet01, !Ref PublicSubnet02, !Ref PrivateSubnet01, !Ref PrivateSubnet02 ] ]
