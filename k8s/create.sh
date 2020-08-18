@@ -14,3 +14,4 @@ kubectl cp /tmp/kubectl $JENKINS_POD:/opt/kubectl
 kubectl apply -f load-balancer.yaml
 echo Jenkins Load Balancer accessible from:
 kubectl get svc cde-jenkins-lb -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+echo
