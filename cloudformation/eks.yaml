@@ -324,14 +324,99 @@ Resources:
       ImageId: ami-0a634ae95e11c6f91
       InstanceType: t2.micro
       SubnetId: !Ref PublicSubnet01
+      KeyName: aminm2
+      SecurityGroupIds:
+        - !GetAtt JenkinsSecurityGroup.GroupId
+      SubnetId: !Ref PublicSubnet01
+      IamInstanceProfile:
+        Ref: JenkinsRoleProfile
       UserData: |
-        d2dldCAtcSAtTyAtIGh0dHBzOi8vcGtnLmplbmtpbnMuaW8vZGViaWFuLXN0YWJsZS9qZW5raW5z
-        LmlvLmtleSB8IHN1ZG8gYXB0LWtleSBhZGQgLSAmJgpzdWRvIHNoIC1jICdlY2hvIGRlYiBodHRw
-        czovL3BrZy5qZW5raW5zLmlvL2RlYmlhbi1zdGFibGUgYmluYXJ5LyA+IC9ldGMvYXB0L3NvdXJj
-        ZXMubGlzdC5kL2plbmtpbnMubGlzdCcgJiYKc3VkbyBhcHQtZ2V0IHVwZGF0ZSAmJgpzdWRvIGFw
-        dC1nZXQgaW5zdGFsbCBvcGVuamRrLTgtanJlIC15ICYmCnN1ZG8gYXB0LWdldCBpbnN0YWxsIGpl
-        bmtpbnMgLXkK
+        IyEvYmluL2Jhc2gKCndnZXQgLXEgLU8gLSBodHRwczovL3BrZy5qZW5raW5zLmlvL2RlYmlhbi1z
+        dGFibGUvamVua2lucy5pby5rZXkgfCBzdWRvIGFwdC1rZXkgYWRkIC0gJiYKc3VkbyBzaCAtYyAn
+        ZWNobyBkZWIgaHR0cHM6Ly9wa2cuamVua2lucy5pby9kZWJpYW4tc3RhYmxlIGJpbmFyeS8gPiAv
+        ZXRjL2FwdC9zb3VyY2VzLmxpc3QuZC9qZW5raW5zLmxpc3QnICYmCnN1ZG8gYXB0LWdldCB1cGRh
+        dGUgJiYKc3VkbyBhcHQtZ2V0IGluc3RhbGwgcHl0aG9uMy1waXAgLXkgJiYKc3VkbyBwaXAzIGlu
+        c3RhbGwgYXdzY2xpICYmCnN1ZG8gLWl1IGplbmtpbnMgY3VybCAtTCAtbyAvdmFyL2xpYi9qZW5r
+        aW5zL2t1YmVjdGwgImh0dHBzOi8vc3RvcmFnZS5nb29nbGVhcGlzLmNvbS9rdWJlcm5ldGVzLXJl
+        bGVhc2UvcmVsZWFzZS8kKGN1cmwgLXMgaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL2t1
+        YmVybmV0ZXMtcmVsZWFzZS9yZWxlYXNlL3N0YWJsZS50eHQpL2Jpbi9saW51eC9hbWQ2NC9rdWJl
+        Y3RsIiAmJgpzdWRvIC1pdSBqZW5raW5zIGF3cyBla3MgLS1yZWdpb24gdXMtd2VzdC0yIHVwZGF0
+        ZS1rdWJlY29uZmlnIC0tbmFtZSBla3MtY2x1c3RlciAmJgpzdWRvIGFwdC1nZXQgaW5zdGFsbCBv
+        cGVuamRrLTgtanJlIC15ICYmCnN1ZG8gYXB0LWdldCBpbnN0YWxsIGplbmtpbnMgLXkgJiYKY2F0
+        IDw8J0VPRicgfCBzdWRvIC1pdSBqZW5raW5zIGJhc2ggLWMgJ2NhdCAtID4gaW5zdGFsbF9wbHVn
+        aW5zLnNoICYmIGNobW9kICt4IGluc3RhbGxfcGx1Z2lucy5zaCcKd2dldCBodHRwOi8vbG9jYWxo
+        b3N0OjgwODAvam5scEphcnMvamVua2lucy1jbGkuamFyCmphdmEgLWphciBqZW5raW5zLWNsaS5q
+        YXIgLXMgaHR0cDovL2xvY2FsaG9zdDo4MDgwIC1hdXRoIGplbmtpbnM6JHBhc3N3b3JkIGluc3Rh
+        bGwtcGx1Z2luIGt1YmVybmV0ZXMKamF2YSAtamFyIGplbmtpbnMtY2xpLmphciAtcyBodHRwOi8v
+        bG9jYWxob3N0OjgwODAgLWF1dGggamVua2luczokcGFzc3dvcmQgaW5zdGFsbC1wbHVnaW4gd29y
+        a2Zsb3ctam9iCmphdmEgLWphciBqZW5raW5zLWNsaS5qYXIgLXMgaHR0cDovL2xvY2FsaG9zdDo4
+        MDgwIC1hdXRoIGplbmtpbnM6JHBhc3N3b3JkIGluc3RhbGwtcGx1Z2luIHdvcmtmbG93LWFnZ3Jl
+        Z2F0b3IKamF2YSAtamFyIGplbmtpbnMtY2xpLmphciAtcyBodHRwOi8vbG9jYWxob3N0OjgwODAg
+        LWF1dGggamVua2luczokcGFzc3dvcmQgaW5zdGFsbC1wbHVnaW4gY3JlZGVudGlhbHMtYmluZGlu
+        ZwpqYXZhIC1qYXIgamVua2lucy1jbGkuamFyIC1zIGh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCAtYXV0
+        aCBqZW5raW5zOiRwYXNzd29yZCBpbnN0YWxsLXBsdWdpbiBnaXQKamF2YSAtamFyIGplbmtpbnMt
+        Y2xpLmphciAtcyBodHRwOi8vbG9jYWxob3N0OjgwODAgLWF1dGggamVua2luczokcGFzc3dvcmQg
+        aW5zdGFsbC1wbHVnaW4gY29tbWFuZC1sYXVuY2hlcgpqYXZhIC1qYXIgamVua2lucy1jbGkuamFy
+        IC1zIGh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29yZCBpbnN0YWxs
+        LXBsdWdpbiBnaXRodWItYnJhbmNoLXNvdXJjZQpqYXZhIC1qYXIgamVua2lucy1jbGkuamFyIC1z
+        IGh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29yZCBpbnN0YWxsLXBs
+        dWdpbiBkb2NrZXItd29ya2Zsb3cKamF2YSAtamFyIGplbmtpbnMtY2xpLmphciAtcyBodHRwOi8v
+        bG9jYWxob3N0OjgwODAgLWF1dGggamVua2luczokcGFzc3dvcmQgaW5zdGFsbC1wbHVnaW4gcGlw
+        ZWxpbmUtdXRpbGl0eS1zdGVwcwpqYXZhIC1qYXIgamVua2lucy1jbGkuamFyIC1zIGh0dHA6Ly9s
+        b2NhbGhvc3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29yZCBpbnN0YWxsLXBsdWdpbiBibHVl
+        b2NlYW4tcmVzdApqYXZhIC1qYXIgamVua2lucy1jbGkuamFyIC1zIGh0dHA6Ly9sb2NhbGhvc3Q6
+        ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29yZCBpbnN0YWxsLXBsdWdpbiBibHVlb2NlYW4td2Vi
+        CmphdmEgLWphciBqZW5raW5zLWNsaS5qYXIgLXMgaHR0cDovL2xvY2FsaG9zdDo4MDgwIC1hdXRo
+        IGplbmtpbnM6JHBhc3N3b3JkIGluc3RhbGwtcGx1Z2luIGJsdWVvY2Vhbi1qd3QKamF2YSAtamFy
+        IGplbmtpbnMtY2xpLmphciAtcyBodHRwOi8vbG9jYWxob3N0OjgwODAgLWF1dGggamVua2luczok
+        cGFzc3dvcmQgaW5zdGFsbC1wbHVnaW4gYmx1ZW9jZWFuLXBpcGVsaW5lLXNjbS1hcGkKamF2YSAt
+        amFyIGplbmtpbnMtY2xpLmphciAtcyBodHRwOi8vbG9jYWxob3N0OjgwODAgLWF1dGggamVua2lu
+        czokcGFzc3dvcmQgaW5zdGFsbC1wbHVnaW4gYmx1ZW9jZWFuLXJlc3QtaW1wbApqYXZhIC1qYXIg
+        amVua2lucy1jbGkuamFyIC1zIGh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRw
+        YXNzd29yZCBpbnN0YWxsLXBsdWdpbiBibHVlb2NlYW4tY29yZS1qcwpqYXZhIC1qYXIgamVua2lu
+        cy1jbGkuamFyIC1zIGh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29y
+        ZCBpbnN0YWxsLXBsdWdpbiBibHVlb2NlYW4tcGlwZWxpbmUtYXBpLWltcGwKamF2YSAtamFyIGpl
+        bmtpbnMtY2xpLmphciAtcyBodHRwOi8vbG9jYWxob3N0OjgwODAgLWF1dGggamVua2luczokcGFz
+        c3dvcmQgaW5zdGFsbC1wbHVnaW4gYmx1ZW9jZWFuLWRhc2hib2FyZApqYXZhIC1qYXIgamVua2lu
+        cy1jbGkuamFyIC1zIGh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29y
+        ZCBpbnN0YWxsLXBsdWdpbiBibHVlb2NlYW4tZ2l0LXBpcGVsaW5lCmphdmEgLWphciBqZW5raW5z
+        LWNsaS5qYXIgLXMgaHR0cDovL2xvY2FsaG9zdDo4MDgwIC1hdXRoIGplbmtpbnM6JHBhc3N3b3Jk
+        IGluc3RhbGwtcGx1Z2luIGJsdWVvY2Vhbi1naXRodWItcGlwZWxpbmUKamF2YSAtamFyIGplbmtp
+        bnMtY2xpLmphciAtcyBodHRwOi8vbG9jYWxob3N0OjgwODAgLWF1dGggamVua2luczokcGFzc3dv
+        cmQgaW5zdGFsbC1wbHVnaW4gYmx1ZW9jZWFuLWRpc3BsYXktdXJsCmphdmEgLWphciBqZW5raW5z
+        LWNsaS5qYXIgLXMgaHR0cDovL2xvY2FsaG9zdDo4MDgwIC1hdXRoIGplbmtpbnM6JHBhc3N3b3Jk
+        IGluc3RhbGwtcGx1Z2luIGJsdWVvY2Vhbi1jb25maWcKamF2YSAtamFyIGplbmtpbnMtY2xpLmph
+        ciAtcyBodHRwOi8vbG9jYWxob3N0OjgwODAgLWF1dGggamVua2luczokcGFzc3dvcmQgaW5zdGFs
+        bC1wbHVnaW4gYmx1ZW9jZWFuLXBpcGVsaW5lLWVkaXRvcgpqYXZhIC1qYXIgamVua2lucy1jbGku
+        amFyIC1zIGh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29yZCBpbnN0
+        YWxsLXBsdWdpbiBibHVlb2NlYW4tZXZlbnRzCmphdmEgLWphciBqZW5raW5zLWNsaS5qYXIgLXMg
+        aHR0cDovL2xvY2FsaG9zdDo4MDgwIC1hdXRoIGplbmtpbnM6JHBhc3N3b3JkIGluc3RhbGwtcGx1
+        Z2luIGJsdWVvY2VhbgpqYXZhIC1qYXIgamVua2lucy1jbGkuamFyIC1zIGh0dHA6Ly9sb2NhbGhv
+        c3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29yZCBpbnN0YWxsLXBsdWdpbiBibHVlb2NlYW4t
+        ZXhlY3V0b3ItaW5mbwpqYXZhIC1qYXIgamVua2lucy1jbGkuamFyIC1zIGh0dHA6Ly9sb2NhbGhv
+        c3Q6ODA4MCAtYXV0aCBqZW5raW5zOiRwYXNzd29yZCBpbnN0YWxsLXBsdWdpbiBibHVlb2NlYW4t
+        Y29tbW9ucwpFT0YK
 
+  JenkinsRoleProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - Ref: eksClusterRole
+  JenkinsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Allow ssh and jenkins web
+      SecurityGroupIngress: 
+      - CidrIp: 0.0.0.0/0
+        FromPort: 22
+        ToPort: 22
+        IpProtocol: tcp
+      - CidrIp: 0.0.0.0/0
+        FromPort: 8080
+        ToPort: 8080
+        IpProtocol: tcp
+      VpcId: !Ref VPC
 Outputs:
   SubnetIds:
     Description: Subnets IDs in the VPC
