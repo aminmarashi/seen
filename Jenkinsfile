@@ -6,7 +6,7 @@ pipeline {
                 sh 'echo "Deploy K8s"'
                 sh '''
                     export PATH="$PATH:/var/lib/jenkins/"
-                    cd k8s/app
+                    cd k8s
                     ./create.sh
                 '''
             }
