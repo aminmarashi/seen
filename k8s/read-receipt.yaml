@@ -25,12 +25,11 @@ spec:
           image: marashisamin/read-receipt
           imagePullPolicy: "Always"
           livenessProbe:
-            exec:
-              command:
-              - curl
-              - localhost:8081/stats
-            initialDelaySeconds: 2
-            periodSeconds: 2
+            httpGet:
+              path: /stats
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
 
           ports:
             - containerPort: 8080
