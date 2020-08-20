@@ -4,7 +4,12 @@ kind: Deployment
 metadata:
   name: read-receipt
 spec:
-  replicas: 1
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
   selector:
     matchLabels:
       app: read-receipt
