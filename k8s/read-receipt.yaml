@@ -27,7 +27,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /stats
-              port: 8081
+              port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3
 
