@@ -24,10 +24,10 @@ spec:
         - name: read-receipt
           image: marashisamin/read-receipt
           imagePullPolicy: "Always"
-          livenessProbe:
+          readinessProbe:
             httpGet:
               path: /stats
-              port: 8080
+              port: 8081
             initialDelaySeconds: 3
             periodSeconds: 3
 
