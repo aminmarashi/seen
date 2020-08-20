@@ -24,13 +24,13 @@ spec:
         - name: read-receipt
           image: marashisamin/read-receipt
           imagePullPolicy: "Always"
-      livenessProbe:
-        exec:
-          command:
-          - curl
-          - localhost:8080
-        initialDelaySeconds: 2
-        periodSeconds: 2
+          livenessProbe:
+            exec:
+              command:
+              - curl
+              - localhost:8080
+            initialDelaySeconds: 2
+            periodSeconds: 2
 
           ports:
             - containerPort: 8080
