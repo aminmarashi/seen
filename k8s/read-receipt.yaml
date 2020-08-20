@@ -28,7 +28,7 @@ spec:
             exec:
               command:
               - curl
-              - localhost:8080/statss
+              - localhost:8081/stats
             initialDelaySeconds: 2
             periodSeconds: 2
 
