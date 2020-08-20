@@ -1,4 +1,5 @@
 #!/bin/bash
 
-kubectl delete --force -f load-balancer.yaml
-helm delete cde-jenkins
+for i in *.yaml; do
+    kubectl delete --force -f $i
+done
