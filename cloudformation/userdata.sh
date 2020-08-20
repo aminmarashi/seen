@@ -11,34 +11,35 @@ sudo apt-get install openjdk-8-jre -y
 
 # Setup jenkins
 sudo apt-get install jenkins -y
+sleep 60s
 wget http://localhost:8080/jnlpJars/jenkins-cli.jar
-jenkins_password=$(cat /var/lib/jenkins/secrets/initialAdminPassword)
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin kubernetes
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin workflow-job
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin workflow-aggregator
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin credentials-binding
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin git
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin command-launcher
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin github-branch-source
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin docker-workflow
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin pipeline-utility-steps
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-rest
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-web
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-jwt
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-pipeline-scm-api
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-rest-impl
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-core-js
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-pipeline-api-impl
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-dashboard
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-git-pipeline
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-github-pipeline
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-display-url
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-config
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-pipeline-editor
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-events
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-executor-info
-java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin blueocean-commons
+jenkins_password=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin kubernetes \
+                                                                                                workflow-job \
+                                                                                                workflow-aggregator \
+                                                                                                credentials-binding \
+                                                                                                git \
+                                                                                                command-launcher \
+                                                                                                github-branch-source \
+                                                                                                docker-workflow \
+                                                                                                pipeline-utility-steps \
+                                                                                                blueocean-rest \
+                                                                                                blueocean-web \
+                                                                                                blueocean-jwt \
+                                                                                                blueocean-pipeline-scm-api \
+                                                                                                blueocean-rest-impl \
+                                                                                                blueocean-core-js \
+                                                                                                blueocean-pipeline-api-impl \
+                                                                                                blueocean-dashboard \
+                                                                                                blueocean-git-pipeline \
+                                                                                                blueocean-github-pipeline \
+                                                                                                blueocean-display-url \
+                                                                                                blueocean-config \
+                                                                                                blueocean-pipeline-editor \
+                                                                                                blueocean-events \
+                                                                                                blueocean \
+                                                                                                blueocean-executor-info \
+                                                                                                blueocean-commons
 
 # Setup k8s
 sudo pip3 install awscli

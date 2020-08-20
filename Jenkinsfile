@@ -5,7 +5,7 @@ pipeline {
             steps {
                 sh 'echo "Deploy K8s"'
                 sh '''
-                    cd k8s
+                    cd k8s/app
                     ./create.sh
                 '''
             }
