@@ -23,7 +23,8 @@ pipeline {
         stage('Login to Docker') {
             steps {
                 sh '''
-                    echo ${PASSWORD} | docker login -u ${USERNAME}
+                    env
+                    echo ${password} | docker login -u ${username}
                 '''
             }
         }
