@@ -9,7 +9,7 @@ pipeline {
                         parameters: [
                             string(defaultValue: 'None',
                                 description: 'Dockerhub username',
-                                name: 'username),
+                                name: 'username'),
                             string(defaultValue: 'None',
                                 description: 'Dockerhub password',
                                 name: 'password'),
