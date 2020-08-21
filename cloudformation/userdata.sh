@@ -11,6 +11,7 @@ sudo apt-get install openjdk-8-jre -y
 
 # Setup jenkins
 sudo apt-get install jenkins -y
+echo Waiting 15 minutes to make sure cluster is created, please do not stop the script
 sleep 15m
 wget http://localhost:8080/jnlpJars/jenkins-cli.jar
 jenkins_password=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
