@@ -15,8 +15,8 @@ pipeline {
                                 name: 'password'),
                         ])
 
-                    username = userInput.username?:''
-                    password = userInput.password?:''
+                    def username = userInput.username
+                    def password = userInput.password
                 }
             }
         }
