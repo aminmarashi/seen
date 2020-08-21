@@ -4,19 +4,20 @@ pipeline {
         stage('Get Dockerhub Credentials') {
             steps {
                 script {
-                    def userInput = input(
-                        id: 'userInput', message: 'Enter the Dockerhub username/password',
+                    def username = input(
+                        id: 'username', message: 'Enter Dockerhub username',
                         parameters: [
                             string(defaultValue: '',
                                 description: 'Dockerhub username',
                                 name: 'username'),
+                        ])
+                    def password = input(
+                        id: 'password', message: 'Enter Dockerhub password',
+                        parameters: [
                             string(defaultValue: '',
                                 description: 'Dockerhub password',
                                 name: 'password'),
                         ])
-
-                    def username = userInput.username
-                    def password = userInput.password
                 }
             }
         }
