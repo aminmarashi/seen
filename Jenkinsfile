@@ -21,9 +21,11 @@ pipeline {
             }
         }
         stage('Login to Docker') {
-            sh '''
-                echo ${PASSWORD} | docker login -u ${USERNAME}
-            '''
+            steps {
+                sh '''
+                    echo ${PASSWORD} | docker login -u ${USERNAME}
+                '''
+            }
         }
         stage('Build and push the image') {
             steps {
