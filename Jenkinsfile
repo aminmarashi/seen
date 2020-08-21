@@ -7,10 +7,10 @@ pipeline {
                     def userInput = input(
                         id: 'userInput', message: 'Enter the Dockerhub username/password',
                         parameters: [
-                            string(defaultValue: 'None',
+                            string(defaultValue: '',
                                 description: 'Dockerhub username',
                                 name: 'username'),
-                            string(defaultValue: 'None',
+                            string(defaultValue: '',
                                 description: 'Dockerhub password',
                                 name: 'password'),
                         ])
