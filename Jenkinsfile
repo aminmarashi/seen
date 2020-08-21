@@ -1,32 +1,26 @@
 pipeline {
     agent any
     stages {
-        stage('Get Dockerhub Credentials') {
+        stage('Login with Dockerhub Credentials') {
             steps {
                 script {
-                    def username = input(
-                        id: 'username', message: 'Enter Dockerhub username',
+                    def userInput = input(
+                        id: 'userInput', message: 'Enter Dockerhub username/password',
                         parameters: [
                             string(defaultValue: '',
                                 description: 'Dockerhub username',
                                 name: 'username'),
-                        ])
-                    def password = input(
-                        id: 'password', message: 'Enter Dockerhub password',
-                        parameters: [
                             string(defaultValue: '',
                                 description: 'Dockerhub password',
                                 name: 'password'),
                         ])
+                    def username = userInput.username
+                    def password = userInput.password
+                    sh '''
+                        env
+                        echo ${password} | docker login -u ${username}
+                    '''
                 }
-            }
-        }
-        stage('Login to Docker') {
-            steps {
-                sh '''
-                    env
-                    echo ${password} | docker login -u ${username}
-                '''
             }
         }
         stage('Build and push the image') {
