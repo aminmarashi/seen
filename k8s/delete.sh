@@ -1,5 +1,6 @@
 #!/bin/bash
 
+CONFIG_LOC=/tmp/kubeconfig
 for i in *.yaml; do
-    kubectl delete --force -f $i
+    kubectl --kubeconfig $CONFIG_LOC delete --force -f $i
 done
