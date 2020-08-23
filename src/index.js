@@ -2,7 +2,7 @@ const express = require('express');
 const pgPromise = require('pg-promise');
 
 const app = express();
-const port = 8081;
+const port = 8080;
 
 const CONNINFO = {
   host: process.env.DB_HOST,
