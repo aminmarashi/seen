@@ -11,5 +11,7 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
+    'no-template-curly-in-string': 0,
+    'consistent-return': 0,
   },
 };
