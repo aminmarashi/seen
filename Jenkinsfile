@@ -16,12 +16,10 @@ pipeline {
                         ])
                     def username = userInput.username
                     def password = userInput.password
-                    echo(username)
-                    echo(password)
-                    sh '''
+                    sh """
                         env
                         echo ${password} | docker login -u ${username}
-                    '''
+                    """
                 }
             }
         }
