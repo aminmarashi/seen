@@ -16,7 +16,7 @@ pipeline {
                         ])
                     def username = userInput.username
                     def password = userInput.password
-                    sh "echo ${password} | docker login -u ${username} --password-stdin"
+                    sh "echo ${password} | sudo -iu jenkins docker login -u ${username} --password-stdin"
                 }
             }
         }
