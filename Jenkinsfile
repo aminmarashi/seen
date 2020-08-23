@@ -14,6 +14,7 @@ pipeline {
                                 description: 'Dockerhub password',
                                 name: 'password'),
                         ])
+                    echo(userInput)
                     def username = userInput.username
                     def password = userInput.password
                     sh '''
