@@ -19,7 +19,7 @@ sudo apt-get install openjdk-8-jre -y
 sudo apt-get install jenkins -y
 echo Waiting 2 minute to make sure Jenkins is running
 sleep 1m
-sudo usermod -aG docker jenkins
+sudo chmod 777 /var/run/docker.sock
 wget http://localhost:8080/jnlpJars/jenkins-cli.jar
 jenkins_password=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
 java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:$jenkins_password install-plugin kubernetes \
