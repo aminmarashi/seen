@@ -5,7 +5,7 @@ pipeline {
             steps {
                 sh '''
                     cd src
-                    npm ci
+                    npm install
                     npm run lint
                 '''
             }
