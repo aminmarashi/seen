@@ -29,6 +29,7 @@ pipeline {
         stage('Build and push the image') {
             steps {
                 sh '''
+                    pwd
                     cd src
                     ./build.sh
                 '''
