@@ -1,6 +1,15 @@
 pipeline {
     agent any
     stages {
+        stage('Linting JS code') {
+            steps {
+                sh '''
+                    cd src
+                    npm ci
+                    npm run lint
+                '''
+            }
+        }
         stage('Login with Dockerhub Credentials') {
             steps {
                 script {
