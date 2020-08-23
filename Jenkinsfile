@@ -4,20 +4,25 @@ pipeline {
         stage('Login with Dockerhub Credentials') {
             steps {
                 script {
-                    def userInput = input(
-                        id: 'userInput', message: 'Enter Dockerhub username/password',
-                        parameters: [
-                            string(defaultValue: '',
-                                description: 'Dockerhub username',
-                                name: 'username'),
-                            string(defaultValue: '',
-                                description: 'Dockerhub password',
-                                name: 'password'),
-                        ])
-                    def username = userInput.username
-                    def password = userInput.password
-                    sh 'env && id'
-                    sh "echo ${password} | docker login -u ${username} --password-stdin"
+                    def exists = fileExists '/var/lib/jenkins/.docker/config.json'
+
+                    if (exists) {
+                        echo 'Docker config exists skipping...'
+                    } else {
+                        def userInput = input(
+                            id: 'userInput', message: 'Enter Dockerhub username/password',
+                            parameters: [
+                                string(defaultValue: '',
+                                    description: 'Dockerhub username',
+                                    name: 'username'),
+                                string(defaultValue: '',
+                                    description: 'Dockerhub password',
+                                    name: 'password'),
+                            ])
+                        def username = userInput.username
+                        def password = userInput.password
+                        sh "echo ${password} | docker login -u ${username} --password-stdin"
+                    }
                 }
             }
         }
