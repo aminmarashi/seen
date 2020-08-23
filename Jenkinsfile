@@ -29,9 +29,8 @@ pipeline {
         stage('Build and push the image') {
             steps {
                 sh '''
-                    pwd
                     cd src
-                    ./build.sh
+                    TAG=$GIT_COMMIT ./build.sh
                 '''
             }
         }
@@ -40,7 +39,7 @@ pipeline {
                 sh '''
                     export PATH="$PATH:/var/lib/jenkins/"
                     cd k8s
-                    ./create.sh
+                    TAG=$GIT_COMMIT ./create.sh
                 '''
             }
         }

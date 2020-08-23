@@ -4,7 +4,7 @@ set -e
 
 kubectl apply -f read-receipt-secret.yaml
 kubectl apply -f read-receipt-db.yaml
-kubectl apply -f read-receipt.yaml
+cat read-receipt.yaml | sed "s/{{TAG}}/$TAG/g" | kubectl apply -f -
 
 # Install load balancers
 kubectl apply -f load-balancer.yaml
