@@ -1,4 +1,4 @@
-# Cde Capstone
+# Read Receipt
 
 To create a cluster using cloudformation and set up kubernetes config locally:
 
