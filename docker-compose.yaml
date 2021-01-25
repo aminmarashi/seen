@@ -17,6 +17,7 @@ services:
       - database.env # configure postgres
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - ./schema.sql:/docker-entrypoint-initdb.d/0_init.sql
     expose:
       - 5432
     networks:
