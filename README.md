@@ -1,30 +1,25 @@
-# Read Receipt
+# Seen
 
-To create a cluster using cloudformation and set up kubernetes config locally:
+## Start the script
 
+Please make sure `Docker` and `docker-compose` are both installed and are
+running correctly.
+
+```bash
+./start.sh
 ```
-cd cloudformation
-./create.sh
-```
 
-Visit the automatically generated domain to login to Jenkins and add the github
-project.
+The above script will run the database and the app locally in two containers,
+the app is bound to localhost:8080 by default, you can change that in the
+`docker-compose` file.
 
-Docker image is uploaded to `marashisamin/read-receipt`
-
-## How to use the project
-
-Visit the load balancer URL
-
-```
-kubectl --kubeconfig /tmp/kubeconfig get svc read-receipt-lb
-```
+## Pages
 
 ### /create/test-image.png
 
 Create a transparent pixel that will be tracked on visit
 
-URL: `http://[auto generated].us-west-2.elb.amazonaws.com/create/test-image.png`
+URL: `[host]/create/test-image.png`
 
 Click on copy button to copy the image element and paste it anywhere (including
 email).
@@ -33,7 +28,7 @@ Or just visit the newly created image by clicking on the link.
 
 ### /test-image.png
 
-URL: `http://[auto generated].us-west-2.elb.amazonaws.com/test-image.png`
+URL: `[host]/test-image.png`
 
 To access the image, your access will be logged and will be shown under
 `/stats`
@@ -42,4 +37,4 @@ To access the image, your access will be logged and will be shown under
 
 Shows the logs of visits to every image
 
-URL: `http://[auto generated].us-west-2.elb.amazonaws.com/stats`
+URL: `[host]/stats`
