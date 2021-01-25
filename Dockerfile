@@ -6,8 +6,7 @@ COPY package* ./
 
 RUN npm install
 
-COPY index.js ./
-
-COPY views ./views
+COPY src/index.js ./
+COPY src/views ./views
 
 ENTRYPOINT ["/usr/bin/env", "node", "index.js"]
