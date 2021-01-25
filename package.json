@@ -1,0 +1,32 @@
+{
+  "name": "seen",
+  "version": "1.0.0",
+  "description": "Get email receipts by including an invisible pixel in your emails",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint src/*.js",
+    "start": "nodemon src/index.js",
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/lit-codes/seen.git"
+  },
+  "author": "Amin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/lit-codes/seen/issues"
+  },
+  "homepage": "https://gitlab.com/lit-codes/seen#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg-promise": "^10.5.8",
+    "pug": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.7"
+  }
+}
