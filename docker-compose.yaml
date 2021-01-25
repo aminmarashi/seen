@@ -5,3 +5,25 @@ services:
     build: .
     ports:
       - 8080:8080
+    env_file:
+      - database.env # configure postgres
+    depends_on:
+      - database
+    networks:
+      - database
+  database:
+    image: 'postgres:12' # use latest official postgres 12 version
+    env_file:
+      - database.env # configure postgres
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+    expose:
+      - 5432
+    networks:
+      - database
+
+volumes:
+  database-data:
+
+networks:
+  database:
