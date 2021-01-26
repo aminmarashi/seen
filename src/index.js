@@ -1,8 +1,22 @@
+require('dotenv').config({ path: 'database.env' });
+const path = require('path');
 const express = require('express');
 const pgPromise = require('pg-promise');
+const { auth } = require('express-openid-connect');
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: process.env.AUTH0_SECRET,
+  baseURL: process.env.AUTH0_BASEURL,
+  clientID: 'ZUUQSwOBPlXbALIc1Rb2VTVZCaZmSFvp',
+  issuerBaseURL: 'https://litcodes.us.auth0.com'
+};
 
 const app = express();
 const port = 8080;
+
+app.use(auth(config));
 
 const CONNINFO = {
   host: process.env.POSTGRES_HOST,
@@ -14,6 +28,7 @@ const CONNINFO = {
 
 const db = pgPromise()(CONNINFO);
 
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 const pixel = Buffer.from('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', 'base64');
