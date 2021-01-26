@@ -33,67 +33,96 @@ app.set('view engine', 'pug');
 
 const pixel = Buffer.from('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', 'base64');
 
-async function recordReceipt(receipt, record) {
-  await db.none('INSERT INTO receipt_records(receipt, record) VALUES(${receipt}, ${record})', {
+async function recordReceipt(user_id, receipt, record) {
+  await db.none('INSERT INTO receipt_records(receipt_id, record) VALUES((SELECT id FROM receipts WHERE user_id = ${user_id} and name = ${receipt}), ${record})', {
     receipt,
     record,
+    user_id,
   });
 }
 
-async function receiptExists(receipt) {
-  // Check if receipt already exists in the DB
-  return (await db.any('SELECT * FROM receipts WHERE name = ${receipt}', {
+async function receiptExists(user_id, receipt) {
+  return (await db.any('SELECT * FROM receipts WHERE user_id = ${user_id} AND name = ${receipt}', {
     receipt,
+    user_id,
   })).length > 0;
 }
 
-async function createReceipt(receipt) {
+async function getOrCreateUser(email) {
+  const id = await db.any('SELECT id FROM users WHERE email = ${email}', {
+    email,
+  });
+  if (id.length) return id[0].id;
+  return await db.any('INSERT INTO users(email) VALUES(${email}) ON CONFLICT DO NOTHING RETURNING id', {
+    email,
+  })[0].id;
+}
+
+async function createReceipt(user_id, receipt) {
   // Create the receipt name in the DB
-  await db.none('INSERT INTO receipts(name) VALUES(${receipt})', {
+  await db.none('INSERT INTO receipts(user_id, name) VALUES(${user_id}, ${receipt})', {
     receipt,
+    user_id,
   });
 }
 
-async function getReceiptStats(receipt) {
+async function getReceiptStats(user_id, receipt) {
   // get receipt stats from the DB
-  return db.any('SELECT * FROM receipt_records WHERE receipt = ${receipt}', {
+  return db.any('SELECT receipts.name as receipt, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id} AND receipts.name = ${receipt}', {
     receipt,
+    user_id,
   });
 }
 
-async function getAllStats() {
+async function getAllStats(user_id) {
   // get receipt stats from the DB
-  return db.any('SELECT * FROM receipt_records');
+  return db.any('SELECT receipts.name as receipt, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id}', {
+    user_id,
+  });
 }
 
 app.get('/stats', requiresAuth(), async (req, res) => {
-  console.log(JSON.stringify(req.oidc.user));
-  const stats = await getAllStats();
+  const { email } = req.oidc.user;
+  const user_id = await getOrCreateUser(email);
+  const stats = await getAllStats(user_id);
 
-  res.render('index', { stats, path: req.path.replace(new RegExp('/+$'), '') });
+  res.render('index', { stats, path: '' });
 });
 
 app.get('/stats/:receipt', requiresAuth(), async (req, res) => {
-  console.log(JSON.stringify(req.oidc.user));
+  const { email } = req.oidc.user;
   const { receipt } = req.params;
 
-  if (!await receiptExists(receipt)) {
+  const user_id = await getOrCreateUser(email);
+  if (!await receiptExists(user_id, receipt)) {
     return res.status(404).send('Receipt not found');
   }
 
-  const stats = await getReceiptStats(receipt);
+  const stats = await getReceiptStats(user_id, receipt);
 
   res.render('index', { stats, path: req.path.replace(new RegExp(`/+${receipt}`), '') });
 });
 
-app.get('/:receipt', async (req, res) => {
+app.get('/create/:receipt', requiresAuth(), async (req, res) => {
+  const { email } = req.oidc.user;
   const { receipt } = req.params;
 
-  if (!await receiptExists(receipt)) {
+  const user_id = await getOrCreateUser(email);
+  if (!await receiptExists(user_id, receipt)) {
+    await createReceipt(user_id, receipt);
+  }
+
+  res.status(200).render('create', { receipt, path: `/${user_id}` });
+});
+
+app.get('/:user_id/:receipt', async (req, res) => {
+  const { receipt, user_id } = req.params;
+
+  if (!await receiptExists(user_id, receipt)) {
     return res.status(404).send('Receipt not found');
   }
 
-  await recordReceipt(receipt, JSON.stringify(req.headers));
+  await recordReceipt(user_id, receipt, JSON.stringify(req.headers));
 
   res.writeHead(200, {
     'Content-Type': 'image/png',
@@ -101,17 +130,6 @@ app.get('/:receipt', async (req, res) => {
   });
 
   res.end(pixel);
-});
-
-app.get('/create/:receipt', requiresAuth(), async (req, res) => {
-  console.log(JSON.stringify(req.oidc.user));
-  const { receipt } = req.params;
-
-  if (!await receiptExists(receipt)) {
-    await createReceipt(receipt);
-  }
-
-  res.status(200).render('create', { receipt, path: req.path.replace(new RegExp(`/+create/+${receipt}`), '') });
 });
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
