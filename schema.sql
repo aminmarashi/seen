@@ -1,8 +1,15 @@
+CREATE TABLE users(
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL
+);
 CREATE TABLE receipts(
-    name VARCHAR(256) PRIMARY KEY
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) NOT NULL,
+    name TEXT NOT NULL,
+    UNIQUE (id, name)
 );
 CREATE TABLE receipt_records(
-    receipt VARCHAR(256) REFERENCES receipts(name),
-    record TEXT,
+    receipt_id INTEGER REFERENCES receipts(id) NOT NULL,
+    record TEXT NOT NULL,
     timestamp TIMESTAMP DEFAULT current_timestamp
 );
