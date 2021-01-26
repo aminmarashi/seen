@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src/*.js",
-    "start": "nodemon src/index.js",
+    "start": "AUTH0_SECRET=`openssl rand -hex 32` AUTH0_BASEURL=http://localhost:8080 POSTGRES_HOST=localhost nodemon src/index.js",
     "test": "npm run test"
   },
   "repository": {
@@ -19,11 +19,14 @@
   },
   "homepage": "https://gitlab.com/lit-codes/seen#readme",
   "dependencies": {
+    "base64url": "^3.0.1",
     "express": "^4.17.1",
+    "express-openid-connect": "^2.2.0",
     "pg-promise": "^10.5.8",
     "pug": "^3.0.0"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "eslint": "^7.7.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
