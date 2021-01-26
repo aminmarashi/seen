@@ -53,9 +53,9 @@ async function getOrCreateUser(email) {
     email,
   });
   if (id.length) return id[0].id;
-  return await db.any('INSERT INTO users(email) VALUES(${email}) ON CONFLICT DO NOTHING RETURNING id', {
+  return (await db.any('INSERT INTO users(email) VALUES(${email}) ON CONFLICT DO NOTHING RETURNING id', {
     email,
-  })[0].id;
+  }))[0].id;
 }
 
 async function createReceipt(user_id, receipt) {
