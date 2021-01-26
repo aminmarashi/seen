@@ -86,7 +86,7 @@ app.get('/stats', requiresAuth(), async (req, res) => {
   const user_id = await getOrCreateUser(email);
   const stats = await getAllStats(user_id);
 
-  res.render('index', { stats, path: '' });
+  res.render('index', { user: req.oidc.user, stats, path: '' });
 });
 
 app.get('/stats/:receipt', requiresAuth(), async (req, res) => {
@@ -100,7 +100,7 @@ app.get('/stats/:receipt', requiresAuth(), async (req, res) => {
 
   const stats = await getReceiptStats(user_id, receipt);
 
-  res.render('index', { stats, path: req.path.replace(new RegExp(`/+${receipt}`), '') });
+  res.render('index', { user: req.oidc.user, stats, path: req.path.replace(new RegExp(`/+${receipt}`), '') });
 });
 
 app.get('/create/:receipt', requiresAuth(), async (req, res) => {
@@ -112,7 +112,7 @@ app.get('/create/:receipt', requiresAuth(), async (req, res) => {
     await createReceipt(user_id, receipt);
   }
 
-  res.status(200).render('create', { receipt, path: `/${user_id}` });
+  res.status(200).render('create', { user: req.oidc.user, receipt, path: `/${user_id}` });
 });
 
 app.get('/:user_id/:receipt', async (req, res) => {
