@@ -2,7 +2,7 @@ require('dotenv').config({ path: 'database.env' });
 const path = require('path');
 const express = require('express');
 const pgPromise = require('pg-promise');
-const { requiresAuth } = require('express-openid-connect');
+const { auth, requiresAuth } = require('express-openid-connect');
 
 const config = {
   authRequired: false,
