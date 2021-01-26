@@ -2,7 +2,7 @@ require('dotenv').config({ path: 'database.env' });
 const path = require('path');
 const express = require('express');
 const pgPromise = require('pg-promise');
-const { auth } = require('express-openid-connect');
+const { requiresAuth } = require('express-openid-connect');
 
 const config = {
   authRequired: false,
@@ -66,13 +66,15 @@ async function getAllStats() {
   return db.any('SELECT * FROM receipt_records');
 }
 
-app.get('/stats', async (req, res) => {
+app.get('/stats', requiresAuth(), async (req, res) => {
+  console.log(JSON.stringify(req.oidc.user));
   const stats = await getAllStats();
 
   res.render('index', { stats, path: req.path.replace(new RegExp('/+$'), '') });
 });
 
-app.get('/stats/:receipt', async (req, res) => {
+app.get('/stats/:receipt', requiresAuth(), async (req, res) => {
+  console.log(JSON.stringify(req.oidc.user));
   const { receipt } = req.params;
 
   if (!await receiptExists(receipt)) {
@@ -101,7 +103,8 @@ app.get('/:receipt', async (req, res) => {
   res.end(pixel);
 });
 
-app.get('/create/:receipt', async (req, res) => {
+app.get('/create/:receipt', requiresAuth(), async (req, res) => {
+  console.log(JSON.stringify(req.oidc.user));
   const { receipt } = req.params;
 
   if (!await receiptExists(receipt)) {
