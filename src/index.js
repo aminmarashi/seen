@@ -17,6 +17,7 @@ const app = express();
 const port = 8080;
 
 app.use(auth(config));
+app.use(express.urlencoded());
 
 const CONNINFO = {
   host: process.env.POSTGRES_HOST,
@@ -33,19 +34,28 @@ app.set('view engine', 'pug');
 
 const pixel = Buffer.from('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', 'base64');
 
-async function recordReceipt(user_id, receipt, record) {
-  await db.none('INSERT INTO receipt_records(receipt_id, record) VALUES((SELECT id FROM receipts WHERE user_id = ${user_id} and name = ${receipt}), ${record})', {
-    receipt,
+async function recordReceipt(receipt_id, record) {
+  await db.none('INSERT INTO receipt_records(receipt_id, record) VALUES(${receipt_id}, ${record})', {
+    receipt_id,
     record,
-    user_id,
   });
 }
 
-async function receiptExists(user_id, receipt) {
-  return (await db.any('SELECT * FROM receipts WHERE user_id = ${user_id} AND name = ${receipt}', {
-    receipt,
+async function receiptExists(user_id, receipt_name) {
+  const receipt = await db.any('SELECT * FROM receipts WHERE user_id = ${user_id} AND name = ${receipt_name}', {
+    receipt_name,
     user_id,
-  })).length > 0;
+  });
+  if (receipt.length) return receipt[0];
+  return undefined;
+}
+
+async function getReceiptById(receipt_id) {
+  const receipt = await db.any('SELECT * FROM receipts WHERE id = ${receipt_id}', {
+    receipt_id,
+  });
+  if (receipt.length) return receipt[0];
+  return undefined;
 }
 
 async function getOrCreateUser(email) {
@@ -58,25 +68,27 @@ async function getOrCreateUser(email) {
   }))[0].id;
 }
 
-async function createReceipt(user_id, receipt) {
+async function createReceipt(user_id, receipt_name) {
+  const receipt = await receiptExists(user_id, receipt_name);
+  if (receipt) return receipt.id;
   // Create the receipt name in the DB
-  await db.none('INSERT INTO receipts(user_id, name) VALUES(${user_id}, ${receipt})', {
-    receipt,
+  const newReceipt = await db.any('INSERT INTO receipts(user_id, name) VALUES(${user_id}, ${receipt_name}) RETURNING id', {
+    receipt_name,
     user_id,
   });
+  return newReceipt[0].id;
 }
 
-async function getReceiptStats(user_id, receipt) {
+async function getReceiptStats(receipt_id) {
   // get receipt stats from the DB
-  return db.any('SELECT receipts.name as receipt, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id} AND receipts.name = ${receipt}', {
-    receipt,
-    user_id,
+  return db.any('SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE receipt_id = ${receipt_id}', {
+    receipt_id,
   });
 }
 
 async function getAllStats(user_id) {
   // get receipt stats from the DB
-  return db.any('SELECT receipts.name as receipt, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id}', {
+  return db.any('SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id}', {
     user_id,
   });
 }
@@ -86,48 +98,64 @@ app.get('/stats', requiresAuth(), async (req, res) => {
   const user_id = await getOrCreateUser(email);
   const stats = await getAllStats(user_id);
   
-  res.render('index', {
+  res.render('stats', {
     title: 'Stats',
     user: req.oidc.user,
     stats,
-    path: '',
+    path: '/stats',
   });
 });
 
-app.get('/stats/:receipt', requiresAuth(), async (req, res) => {
+app.get('/stats/:receipt_id', requiresAuth(), async (req, res) => {
+  const { receipt_id } = req.params;
+
+  const receipt = await getReceiptById(receipt_id);
+  if (!receipt) {
+    return res.status(404).send('Receipt not found');
+  }
+
+  const stats = await getReceiptStats(receipt.id);
+
+  res.render('stats', {
+    title: `Stats for ${receipt.name}`,
+    receipt,
+    user: req.oidc.user, 
+    stats,
+    path: `/stats`,
+  });
+});
+
+app.post('/create', requiresAuth(), async (req, res) => {
   const { email } = req.oidc.user;
-  const { receipt } = req.params;
-  
+  const { subject: receipt } = req.body;
+
   const user_id = await getOrCreateUser(email);
-  if (!await receiptExists(user_id, receipt)) {
+  const receiptId = await createReceipt(user_id, receipt);
+
+  res.redirect(`/stats/${receiptId}`);  
+});
+
+app.get('/create', requiresAuth(), async (req, res) => {
+  res.render('create', { 
+    title: 'Create a new email',
+    user: req.oidc.user, 
+  });
+});
+
+app.get('/:image', async (req, res) => {
+  const { image } = req.params;
+  
+  const match = image.match(/(\d+).png/);
+  if (!match) {
+    return res.status(404).send('Receipt not found');
+  }
+
+  const receipt = await getReceiptById(match[1]);
+  if (!receipt) {
     return res.status(404).send('Receipt not found');
   }
   
-  const stats = await getReceiptStats(user_id, receipt);
-  
-  res.render('index', { user: req.oidc.user, stats, path: req.path.replace(new RegExp(`/+${receipt}`), '') });
-});
-
-app.get('/create/:receipt', requiresAuth(), async (req, res) => {
-  const { email } = req.oidc.user;
-  const { receipt } = req.params;
-  
-  const user_id = await getOrCreateUser(email);
-  if (!await receiptExists(user_id, receipt)) {
-    await createReceipt(user_id, receipt);
-  }
-  
-  res.status(200).render('create', { user: req.oidc.user, receipt, path: `/${user_id}` });
-});
-
-app.get('/:user_id/:receipt', async (req, res) => {
-  const { receipt, user_id } = req.params;
-  
-  if (!await receiptExists(user_id, receipt)) {
-    return res.status(404).send('Receipt not found');
-  }
-  
-  await recordReceipt(user_id, receipt, JSON.stringify(req.headers));
+  await recordReceipt(receipt.id, JSON.stringify(req.headers));
   
   res.writeHead(200, {
     'Content-Type': 'image/png',

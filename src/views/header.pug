@@ -8,10 +8,16 @@
 |                <a class="mdl-navigation__link" href="/create">Create</a>
 |                <a class="mdl-navigation__link" href="/stats">Stats</a>
 |            </nav>
+if receipt
+    span(class="mdl-chip")
+        span(class="mdl-chip__text")= receipt.name
+        button(class="mdl-button" onclick=`copyToClipboard(${receipt.id})`) Copy
 |            <!-- Add spacer, to align navigation to the right -->
 |            <div class="mdl-layout-spacer"></div>
 |            <nav class="mdl-navigation">
-|               <img style="border-radius: 50%; display: block; width: 50px" src="#{user.picture}"/>
+|               <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab">
+|                   <img style="width: 60px" src="#{user.picture}"/>
+|               </button>
 |            </nav>
 |        </div>
 |    </header>

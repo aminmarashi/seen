@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+include head.pug
+|   <body>
+include header.pug
+|       <main class="mdl-layout__content">
+|           <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+|               <thead>
+|                   <tr>
+|                       <th class="mdl-data-table__cell--non-numeric">Name</th>
+|                       <th class="mdl-data-table__cell--non-numeric">User Agent</th>
+|                       <th class="mdl-data-table__cell--non-numeric">IP Address</th>
+|                       <th class="mdl-data-table__cell--non-numeric">Date</th>
+|                   </tr>
+|               </thead>
+|               <tbody>
+each stat in stats
+    tr
+        - var record = JSON.parse(stat.record);
+        td(class="mdl-data-table__cell--non-numeric")
+            a(href=`${path}/${stat.receipt_id}`)= stat.receipt_name
+        td(class="mdl-data-table__cell--non-numeric")= record['user-agent']
+        td(class="mdl-data-table__cell--non-numeric")= record['cf-connecting-ip']
+        td(class="mdl-data-table__cell--non-numeric")= stat.timestamp
+|               </tbody>
+|           </table>
+|       </main>
+|   </body>
+script.
+    function select(elem) {
+        var s = window.getSelection()
+        var r = document.createRange();
+        r.selectNode(elem);
+        s.addRange(r)
+    }
+
+    function copyToClipboard(id) {
+        // create hidden text element, if it doesn't already exist
+        var targetId = "_hiddenCopyImg_";
+        var origSelectionStart, origSelectionEnd;
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+            var target = document.createElement("img");
+            target.style.position = "absolute";
+            target.style.left = "-9999px";
+            target.style.top = "0";
+            target.id = targetId;
+            document.body.appendChild(target);
+        }
+        target.src = `/${id}.png`;
+        // select the content
+        var currentFocus = document.activeElement;
+        target.focus();
+        select(target)
+
+        // copy the selection
+        var succeed;
+        try {
+                succeed = document.execCommand("copy");
+        } catch(e) {
+            succeed = false;
+        }
+        // restore original focus
+        if (currentFocus && typeof currentFocus.focus === "function") {
+            currentFocus.focus();
+        }
+
+        // clear temporary content
+        target.textContent = "";
+        return succeed;
+    }
+include libs.pug
+</html>
