@@ -1,6 +1,25 @@
-<header>
-    <div style="float: right">
-        <img style="border-radius: 50%; display: block; width: 50px" src="#{user.picture}"/>
-        <a href="/logout">Logout!</a>
-    </div>
-</header>
+|<div class="demo-layout-transparent mdl-layout">
+|    <header class="mdl-layout__header mdl-layout__header--scroll">
+|        <div class="mdl-layout__header-row">
+|            <!-- Title -->
+|            <span class="mdl-layout-title">Seen</span>
+|            <!-- Navigation -->
+|            <nav class="mdl-navigation">
+|                <a class="mdl-navigation__link" href="/create">Create</a>
+|                <a class="mdl-navigation__link" href="/stats">Stats</a>
+|            </nav>
+|            <!-- Add spacer, to align navigation to the right -->
+|            <div class="mdl-layout-spacer"></div>
+|            <nav class="mdl-navigation">
+|               <img style="border-radius: 50%; display: block; width: 50px" src="#{user.picture}"/>
+|            </nav>
+|        </div>
+|    </header>
+|    <div class="mdl-layout__drawer">
+|        <span class="mdl-layout-title">Seen</span>
+|        <nav class="mdl-navigation">
+|            <a class="mdl-navigation__link" href="/create">Create</a>
+|            <a class="mdl-navigation__link" href="/stats">Stats</a>
+|        </nav>
+|    </div>
+|</div>
