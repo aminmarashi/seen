@@ -1,62 +1,17 @@
 <!doctype html>
-<html>
+|<html>
 include head.pug
 |   <body>
 include header.pug
 |       <main class="mdl-layout__content">
-a(href=`${path}/${receipt}` class="mdl-button")= receipt
-img(src=`${path}/${receipt}` id='receipt')
-button(id="copy-to-clipboard" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored") Copy!
+|           <form action="/create" method="POST">
+|               <div class="mdl-textfield mdl-js-textfield">
+|                   <input class="mdl-textfield__input" type="text" name="subject" id="subject">
+|                   <label class="mdl-textfield__label" for="subject">Subject</label>
+|               </div>
+|               <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Create</button>
+|           </form>
 |       </main>
 |   </body>
-
-script.
-    document.getElementById("copy-to-clipboard").addEventListener("click", function() {
-        copyToClipboard(document.getElementById("receipt"));
-    });
-
-    function select(elem) {
-        var s = window.getSelection()
-        var r = document.createRange();
-        r.selectNode(elem);
-        s.addRange(r)
-    }
-
-    function copyToClipboard(elem) {
-        // create hidden text element, if it doesn't already exist
-        var targetId = "_hiddenCopyImg_";
-        var origSelectionStart, origSelectionEnd;
-        // must use a temporary form element for the selection and copy
-        target = document.getElementById(targetId);
-        if (!target) {
-            var target = document.createElement("img");
-            target.style.position = "absolute";
-            target.style.left = "-9999px";
-            target.style.top = "0";
-            target.id = targetId;
-            document.body.appendChild(target);
-        }
-        target.src = elem.src;
-        // select the content
-        var currentFocus = document.activeElement;
-        target.focus();
-        select(target)
-
-        // copy the selection
-        var succeed;
-        try {
-                succeed = document.execCommand("copy");
-        } catch(e) {
-            succeed = false;
-        }
-        // restore original focus
-        if (currentFocus && typeof currentFocus.focus === "function") {
-            currentFocus.focus();
-        }
-
-        // clear temporary content
-        target.textContent = "";
-        return succeed;
-    }
 include libs.pug
-</html>
+|</html>
