@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src/*.js",
-    "start": "AUTH0_SECRET=`openssl rand -hex 32` AUTH0_BASEURL=http://localhost:8080 POSTGRES_HOST=localhost nodemon src/index.js",
+    "start": "bash -c 'AUTH0_SECRET=$(openssl rand -hex 32) AUTH0_BASEURL=http://localhost:8080 POSTGRES_HOST=localhost nodemon src/index.js'",
     "test": "npm run test"
   },
   "repository": {

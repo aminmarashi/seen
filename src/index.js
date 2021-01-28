@@ -85,50 +85,55 @@ app.get('/stats', requiresAuth(), async (req, res) => {
   const { email } = req.oidc.user;
   const user_id = await getOrCreateUser(email);
   const stats = await getAllStats(user_id);
-
-  res.render('index', { user: req.oidc.user, stats, path: '' });
+  
+  res.render('index', {
+    title: 'Stats',
+    user: req.oidc.user,
+    stats,
+    path: '',
+  });
 });
 
 app.get('/stats/:receipt', requiresAuth(), async (req, res) => {
   const { email } = req.oidc.user;
   const { receipt } = req.params;
-
+  
   const user_id = await getOrCreateUser(email);
   if (!await receiptExists(user_id, receipt)) {
     return res.status(404).send('Receipt not found');
   }
-
+  
   const stats = await getReceiptStats(user_id, receipt);
-
+  
   res.render('index', { user: req.oidc.user, stats, path: req.path.replace(new RegExp(`/+${receipt}`), '') });
 });
 
 app.get('/create/:receipt', requiresAuth(), async (req, res) => {
   const { email } = req.oidc.user;
   const { receipt } = req.params;
-
+  
   const user_id = await getOrCreateUser(email);
   if (!await receiptExists(user_id, receipt)) {
     await createReceipt(user_id, receipt);
   }
-
+  
   res.status(200).render('create', { user: req.oidc.user, receipt, path: `/${user_id}` });
 });
 
 app.get('/:user_id/:receipt', async (req, res) => {
   const { receipt, user_id } = req.params;
-
+  
   if (!await receiptExists(user_id, receipt)) {
     return res.status(404).send('Receipt not found');
   }
-
+  
   await recordReceipt(user_id, receipt, JSON.stringify(req.headers));
-
+  
   res.writeHead(200, {
     'Content-Type': 'image/png',
     'Content-Length': pixel.length,
   });
-
+  
   res.end(pixel);
 });
 
