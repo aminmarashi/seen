@@ -26,6 +26,10 @@ div(class="mdl-grid")
                         td(class="mdl-data-table__cell--non-numeric")= record['user-agent']
     div(class="mdl-cell mdl-cell--1-col")
 |           </main>
+|           <div id="snackbarContainer" class="mdl-js-snackbar mdl-snackbar">
+|              <div class="mdl-snackbar__text"></div>
+|              <button class="mdl-snackbar__action" type="button"></button>
+|           </div>
 |       </div>
 |   </body>
 script.
@@ -61,6 +65,9 @@ script.
         try {
                 succeed = document.execCommand("copy");
         } catch(e) {
+            snackbarContainer.MaterialSnackbar.showSnackbar({
+                message: 'Something went wrong'
+            });
             succeed = false;
         }
         // restore original focus
@@ -70,6 +77,9 @@ script.
 
         // clear temporary content
         target.textContent = "";
+        snackbarContainer.MaterialSnackbar.showSnackbar({
+            message: 'Copied to clipboard'
+        });
         return succeed;
     }
 include libs.pug
