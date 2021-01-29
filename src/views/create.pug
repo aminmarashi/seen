@@ -2,16 +2,18 @@
 |<html>
 include head.pug
 |   <body>
+|       <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
 include header.pug
-|       <main class="mdl-layout__content">
-|           <form action="/create" method="POST">
-|               <div class="mdl-textfield mdl-js-textfield">
-|                   <input class="mdl-textfield__input" type="text" name="subject" id="subject">
-|                   <label class="mdl-textfield__label" for="subject">Subject</label>
-|               </div>
-|               <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Create</button>
-|           </form>
-|       </main>
+|           <main class="mdl-layout__content">
+|               <form action="/create" method="POST">
+|                   <div class="mdl-textfield mdl-js-textfield">
+|                       <input class="mdl-textfield__input" type="text" name="subject" id="subject">
+|                       <label class="mdl-textfield__label" for="subject">Subject</label>
+|                   </div>
+|                   <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Create</button>
+|               </form>
+|           </main>
+|       </div>
 |   </body>
 include libs.pug
 |</html>

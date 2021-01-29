@@ -2,18 +2,19 @@
 <html>
 include head.pug
 |   <body>
+|       <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
 include header.pug
-|       <main class="mdl-layout__content">
-|           <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-|               <thead>
-|                   <tr>
-|                       <th class="mdl-data-table__cell--non-numeric">Name</th>
-|                       <th class="mdl-data-table__cell--non-numeric">User Agent</th>
-|                       <th class="mdl-data-table__cell--non-numeric">IP Address</th>
-|                       <th class="mdl-data-table__cell--non-numeric">Date</th>
-|                   </tr>
-|               </thead>
-|               <tbody>
+|           <main class="mdl-layout__content">
+|               <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+|                   <thead>
+|                       <tr>
+|                           <th class="mdl-data-table__cell--non-numeric">Name</th>
+|                           <th class="mdl-data-table__cell--non-numeric">User Agent</th>
+|                           <th class="mdl-data-table__cell--non-numeric">IP Address</th>
+|                           <th class="mdl-data-table__cell--non-numeric">Date</th>
+|                       </tr>
+|                   </thead>
+|                   <tbody>
 each stat in stats
     tr
         - var record = JSON.parse(stat.record);
@@ -22,9 +23,10 @@ each stat in stats
         td(class="mdl-data-table__cell--non-numeric")= record['user-agent']
         td(class="mdl-data-table__cell--non-numeric")= record['cf-connecting-ip']
         td(class="mdl-data-table__cell--non-numeric")= stat.timestamp
-|               </tbody>
-|           </table>
-|       </main>
+|                   </tbody>
+|               </table>
+|           </main>
+|       </div>
 |   </body>
 script.
     function select(elem) {
