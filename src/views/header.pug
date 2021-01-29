@@ -1,4 +1,4 @@
-|<div class="demo-layout-transparent mdl-layout">
+|<div class="mdl-layout">
 |    <header class="mdl-layout__header mdl-layout__header--scroll">
 |        <div class="mdl-layout__header-row">
 |            <!-- Title -->
@@ -14,10 +14,15 @@ if receipt
         button(class="mdl-button" onclick=`copyToClipboard(${receipt.id})`) Copy
 |            <!-- Add spacer, to align navigation to the right -->
 |            <div class="mdl-layout-spacer"></div>
-|            <nav class="mdl-navigation">
-|               <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab">
-|                   <img style="width: 60px" src="#{user.picture}"/>
+|            <nav class="mdl-navigation" style="position: fixed; right: 55px">
+|               <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab" id="profile-menu">
+|                   <img style="border-radius: 50%; width: 55px" src="#{user.picture}"/>
 |               </button>
+|               <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="profile-menu">
+li(class="mdl-menu__item")= user.nickname
+li(class="mdl-menu__item")
+    a(href="/logout") Logout
+|               </ul>
 |            </nav>
 |        </div>
 |    </header>
