@@ -5,13 +5,20 @@ include head.pug
 |       <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
 include header.pug
 |           <main class="mdl-layout__content">
-|               <form action="/create" method="POST">
-|                   <div class="mdl-textfield mdl-js-textfield">
-|                       <input class="mdl-textfield__input" type="text" name="subject" id="subject">
-|                       <label class="mdl-textfield__label" for="subject">Subject</label>
-|                   </div>
-|                   <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Create</button>
-|               </form>
+form(action="/create" method="POST")
+    div(class="mdl-card mdl-shadow--2dp")
+        div(class="mdl-card__title")
+            h2(class="mdl-card__title-text")= `Choose a name...`
+        div(class="mdl-card__supporting-text")
+            | Choose a name for your tracker pixel, make sure it is something
+            | descriptive which you can remember later.
+            | After creating the pixel you will be redirected to the statistics
+            | page where you can copy the pixel and see who has opened it
+            | (and therefore your email or website).
+            input(class="mdl-textfield__input" type="text" name="subject" id="subject")
+            label(class="mdl-textfield__label" for="subject")= Subject
+        div(class="mdl-card__actions mdl-card--border")
+            button(type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored") Create
 |           </main>
 |       </div>
 |   </body>
