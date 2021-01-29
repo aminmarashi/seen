@@ -5,29 +5,32 @@ include head.pug
 |       <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
 include header.pug
 |           <main class="mdl-layout__content">
-if user
-    div(class="mdl-card mdl-shadow--2dp")
-        div(class="mdl-card__title")
-            h2(class="mdl-card__title-text")= `Hey ${user.nickname}!`
-        div(class="mdl-card__supporting-text")
-            | Glad to see you back. Seen 👀 is there to help you
-            | get information about who opens your emails (or blog post)
-            | or in general wherever you can paste an invisible pixel.
-        div(class="mdl-card__actions mdl-card--border")
-            a(href="/create" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") Create a pixel
-            a(href="/stats" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") Email statistics
-else
-    div(class="mdl-card mdl-shadow--2dp")
-        div(class="mdl-card__title")
-            h2(class="mdl-card__title-text")= `Welcome to Seen 👀!`
-        div(class="mdl-card__supporting-text")
-            | Create an invisible pixel which you can paste to your emails
-            | Weblog or any medium that allows you to share an image by copy-pasting.
-            | Sign-up to create your first invisible pixel, make sure to choose a
-            | descriptive name so you can identify it later.
-        div(class="mdl-card__actions mdl-card--border")
-            a(href="/login" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") Sign up
-
+div(class="mdl-grid")
+    div(class="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet")
+    div(class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet")
+        div(class="mdl-card mdl-shadow--6dp" style="width: fit-content")
+            div(class="mdl-card__title" style="padding: 30px")
+                if user
+                    h2(class="mdl-card__title-text")= `Hey ${user.nickname}!`
+                else
+                    h2(class="mdl-card__title-text")= `Welcome to Seen 👀!`
+            div(class="mdl-card__supporting-text" style="padding: 0px 30px 30px 30px; width: unset")
+                if user    
+                    | Glad to see you back. Seen 👀 is there to help you
+                    | get information about who opens your emails (or blog post)
+                    | or in general wherever you can paste an invisible pixel.
+                else
+                    | Create an invisible pixel which you can paste to your emails
+                    | Weblog or any medium that allows you to share an image by copy-pasting.
+                    | Sign-up to create your first invisible pixel, make sure to choose a
+                    | descriptive name so you can identify it later.
+            div(class="mdl-card__actions mdl-card--border" style="padding: 10px 30px 10px 30px")
+                if user    
+                    a(href="/create" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") Create a pixel
+                    a(href="/stats" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") Email statistics
+                else
+                    a(href="/login" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect") Sign up
+    div(class="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet")
 |           </main>
 |       </div>
 |   </body>
