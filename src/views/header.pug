@@ -1,31 +1,32 @@
-|<div class="demo-layout-transparent mdl-layout">
-|    <header class="mdl-layout__header mdl-layout__header--scroll">
-|        <div class="mdl-layout__header-row">
-|            <!-- Title -->
-|            <span class="mdl-layout-title">Seen</span>
-|            <!-- Navigation -->
-|            <nav class="mdl-navigation">
-|                <a class="mdl-navigation__link" href="/create">Create</a>
-|                <a class="mdl-navigation__link" href="/stats">Stats</a>
-|            </nav>
+|<header class="mdl-layout__header">
+|    <div class="mdl-layout__header-row">
+|        <!-- Title -->
+|        <span class="mdl-layout-title mdl-layout--large-screen-only">Seen</span>
+|        <!-- Navigation -->
+|        <nav class="mdl-navigation">
+|            <a class="mdl-navigation__link mdl-layout--large-screen-only" href="/create">Create</a>
+|            <a class="mdl-navigation__link mdl-layout--large-screen-only" href="/stats">Stats</a>
+|        </nav>
 if receipt
     span(class="mdl-chip")
         span(class="mdl-chip__text")= receipt.name
         button(class="mdl-button" onclick=`copyToClipboard(${receipt.id})`) Copy
-|            <!-- Add spacer, to align navigation to the right -->
-|            <div class="mdl-layout-spacer"></div>
-|            <nav class="mdl-navigation">
-|               <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab">
-|                   <img style="width: 60px" src="#{user.picture}"/>
-|               </button>
-|            </nav>
-|        </div>
-|    </header>
-|    <div class="mdl-layout__drawer">
-|        <span class="mdl-layout-title">Seen</span>
-|        <nav class="mdl-navigation">
-|            <a class="mdl-navigation__link" href="/create">Create</a>
-|            <a class="mdl-navigation__link" href="/stats">Stats</a>
-|        </nav>
-|    </div>
+div(class="mdl-layout-spacer")
+nav(class="mdl-navigation" style="position: fixed; right: 55px")
+    if user
+        button(class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab" id="profile-menu")
+            img(style="border-radius: 50%; width: 55px" src=`${user.picture}`)/
+        ul(class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="profile-menu")
+            li(class="mdl-menu__item")= user.nickname
+            li(class="mdl-menu__item")
+                a(href="/logout") Logout
+    else
+        a(href="/login" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored") Sign up
+|</header>
+|<div class="mdl-layout__drawer">
+|    <span class="mdl-layout-title">Seen</span>
+|    <nav class="mdl-navigation">
+|        <a class="mdl-navigation__link" href="/create">Create</a>
+|        <a class="mdl-navigation__link" href="/stats">Stats</a>
+|    </nav>
 |</div>
