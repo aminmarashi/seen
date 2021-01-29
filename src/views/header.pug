@@ -16,7 +16,7 @@ div(class="mdl-layout-spacer")
 nav(class="mdl-navigation" style="position: fixed; right: 55px")
     if user
         button(class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab" id="profile-menu")
-            img(style="border-radius: 50%; width: 55px" src=`${user.picture}`)
+            img(style="border-radius: 50%; width: 55px" src=`${user.picture}`)/
         ul(class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="profile-menu")
             li(class="mdl-menu__item")= user.nickname
             li(class="mdl-menu__item")
