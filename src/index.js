@@ -42,6 +42,13 @@ async function recordReceipt(receipt_id, record) {
   });
 }
 
+async function getAllReceipts(email) {
+  const user_id = await getOrCreateUser(email);
+  return await db.any('SELECT * FROM receipts WHERE user_id = ${user_id}', {
+    user_id,
+  });
+}
+
 async function receiptExists(user_id, receipt_name) {
   const receipt = await db.any('SELECT * FROM receipts WHERE user_id = ${user_id} AND name = ${receipt_name}', {
     receipt_name,
@@ -122,11 +129,13 @@ app.get('/stats/:receipt_id', requiresAuth(), async (req, res) => {
     return res.status(404).send('Receipt not found');
   }
 
+  const receipts = await getAllReceipts(req.oidc.user.email);
   const stats = await getReceiptStats(receipt.id);
 
   res.render('stats', {
     title: `Stats for ${receipt.name}`,
     receipt,
+    receipts,
     user: req.oidc.user, 
     stats,
     path: `/stats`,
