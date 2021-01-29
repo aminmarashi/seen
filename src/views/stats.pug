@@ -5,26 +5,26 @@ include head.pug
 |       <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
 include header.pug
 |           <main class="mdl-layout__content">
-|               <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-|                   <thead>
-|                       <tr>
-|                           <th class="mdl-data-table__cell--non-numeric">Name</th>
-|                           <th class="mdl-data-table__cell--non-numeric">User Agent</th>
-|                           <th class="mdl-data-table__cell--non-numeric">IP Address</th>
-|                           <th class="mdl-data-table__cell--non-numeric">Date</th>
-|                       </tr>
-|                   </thead>
-|                   <tbody>
-each stat in stats
-    tr
-        - var record = JSON.parse(stat.record);
-        td(class="mdl-data-table__cell--non-numeric")
-            a(href=`${path}/${stat.receipt_id}`)= stat.receipt_name
-        td(class="mdl-data-table__cell--non-numeric")= record['user-agent']
-        td(class="mdl-data-table__cell--non-numeric")= record['cf-connecting-ip']
-        td(class="mdl-data-table__cell--non-numeric")= stat.timestamp
-|                   </tbody>
-|               </table>
+div(class="mdl-grid")
+    div(class="mdl-cell mdl-cell--1-col")
+    div(class="mdl-cell mdl-cell--10-col")
+        table(class="mdl-data-table mdl-js-data-table mdl-shadow--6dp" style="white-space: nowrap; display: block; overflow-x: scroll")
+            thead
+                tr
+                    td(class="mdl-data-table__cell--non-numeric") Name
+                    td(class="mdl-data-table__cell--non-numeric") IP Address
+                    td(class="mdl-data-table__cell--non-numeric") Date
+                    td(class="mdl-data-table__cell--non-numeric") User Agent
+            tbody
+                each stat in stats
+                    tr
+                        - var record = JSON.parse(stat.record);
+                        td(class="mdl-data-table__cell--non-numeric")
+                            a(href=`${path}/${stat.receipt_id}`)= stat.receipt_name
+                        td(class="mdl-data-table__cell--non-numeric")= record['cf-connecting-ip']
+                        td(class="mdl-data-table__cell--non-numeric")= stat.timestamp
+                        td(class="mdl-data-table__cell--non-numeric")= record['user-agent']
+    div(class="mdl-cell mdl-cell--1-col")
 |           </main>
 |       </div>
 |   </body>

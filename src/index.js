@@ -2,9 +2,10 @@ require('dotenv').config({ path: 'database.env' });
 const path = require('path');
 const express = require('express');
 const pgPromise = require('pg-promise');
-const { auth, requiresAuth } = require('express-openid-connect');
+const { auth, requiresAuth, attemptSilentLogin } = require('express-openid-connect');
 
 const config = {
+  attemptSilentLogin: true,
   authRequired: false,
   auth0Logout: true,
   secret: process.env.AUTH0_SECRET,
@@ -92,6 +93,13 @@ async function getAllStats(user_id) {
     user_id,
   });
 }
+
+app.get('/', attemptSilentLogin(), async (req, res) => {
+  res.render('index', { 
+    title: 'Welcome to seen!',
+    user: req.oidc.user,
+  });
+});
 
 app.get('/stats', requiresAuth(), async (req, res) => {
   const { email } = req.oidc.user;
