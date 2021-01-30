@@ -5,7 +5,7 @@ const pgPromise = require('pg-promise');
 const { auth, requiresAuth, attemptSilentLogin } = require('express-openid-connect');
 
 const config = {
-  attemptSilentLogin: true,
+  attemptSilentLogin: false,
   authRequired: false,
   auth0Logout: true,
   secret: process.env.AUTH0_SECRET,
@@ -101,7 +101,7 @@ async function getAllStats(user_id) {
   });
 }
 
-app.get('/', attemptSilentLogin(), async (req, res) => {
+app.get('/', async (req, res) => {
   res.render('index', { 
     title: 'Seen 👀',
     user: req.oidc.user,
