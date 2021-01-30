@@ -10,7 +10,10 @@ if user
 |        </nav>
 if receipts
     span(class="mdl-chip" style="margin: 0px 80px 0px 80px; max-width: 30%; overflow: hidden")
-        span(class="mdl-chip__text" id="receipt-name") Select a pixel...
+        if receipt
+            span(class="mdl-chip__text" id="receipt-name")= receipt.name
+        else
+            span(class="mdl-chip__text" id="receipt-name") Select a pixel...
         ul(class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="receipt-name")
             each r in receipts
                 a(href=`/track/${r.id}`)
