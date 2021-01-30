@@ -112,10 +112,12 @@ app.get('/track', requiresAuth(), async (req, res) => {
   const { email } = req.oidc.user;
   const user_id = await getOrCreateUser(email);
   const stats = await getAllStats(user_id);
-  
+  const receipts = await getAllReceipts(req.oidc.user.email);
+
   res.render('track', {
     title: 'Track a pixel🐕',
     user: req.oidc.user,
+    receipts,
     stats,
     path: '/track',
   });
