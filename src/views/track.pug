@@ -15,6 +15,7 @@ div(class="mdl-grid")
                     td(class="mdl-data-table__cell--non-numeric") IP Address
                     td(class="mdl-data-table__cell--non-numeric") Date
                     td(class="mdl-data-table__cell--non-numeric") User Agent
+                    td(class="mdl-data-table__cell--non-numeric") Referer
             tbody
                 each stat in stats
                     tr
@@ -24,6 +25,7 @@ div(class="mdl-grid")
                         td(class="mdl-data-table__cell--non-numeric")= record['cf-connecting-ip']
                         td(class="mdl-data-table__cell--non-numeric")= stat.timestamp
                         td(class="mdl-data-table__cell--non-numeric")= record['user-agent']
+                        td(class="mdl-data-table__cell--non-numeric")= record['referer']
     div(class="mdl-cell mdl-cell--1-col")
 |           </main>
 |           <div id="snackbarContainer" class="mdl-js-snackbar mdl-snackbar">

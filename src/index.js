@@ -174,8 +174,10 @@ app.get('/:image', async (req, res) => {
     return res.status(404).send('Receipt not found');
   }
   
-  await recordReceipt(receipt.id, JSON.stringify(req.headers));
-  
+  const isSelfRe = new RegExp(req.headers.host);
+  if (!req.headers.referer.match(isSelfRe)) {
+    await recordReceipt(receipt.id, JSON.stringify(req.headers));
+  }
   res.writeHead(200, {
     'Content-Type': 'image/png',
     'Content-Length': pixel.length,
