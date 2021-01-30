@@ -108,20 +108,20 @@ app.get('/', attemptSilentLogin(), async (req, res) => {
   });
 });
 
-app.get('/stats', requiresAuth(), async (req, res) => {
+app.get('/track', requiresAuth(), async (req, res) => {
   const { email } = req.oidc.user;
   const user_id = await getOrCreateUser(email);
   const stats = await getAllStats(user_id);
   
-  res.render('stats', {
-    title: 'Stats',
+  res.render('track', {
+    title: 'Track a pixel🐕',
     user: req.oidc.user,
     stats,
-    path: '/stats',
+    path: '/track',
   });
 });
 
-app.get('/stats/:receipt_id', requiresAuth(), async (req, res) => {
+app.get('/track/:receipt_id', requiresAuth(), async (req, res) => {
   const { receipt_id } = req.params;
 
   const receipt = await getReceiptById(receipt_id);
@@ -132,13 +132,13 @@ app.get('/stats/:receipt_id', requiresAuth(), async (req, res) => {
   const receipts = await getAllReceipts(req.oidc.user.email);
   const stats = await getReceiptStats(receipt.id);
 
-  res.render('stats', {
-    title: `Stats for ${receipt.name}`,
+  res.render('track', {
+    title: `Track ${receipt.name}🐕`,
     receipt,
     receipts,
     user: req.oidc.user, 
     stats,
-    path: `/stats`,
+    path: `/track`,
   });
 });
 
@@ -149,12 +149,12 @@ app.post('/create', requiresAuth(), async (req, res) => {
   const user_id = await getOrCreateUser(email);
   const receiptId = await createReceipt(user_id, receipt);
 
-  res.redirect(`/stats/${receiptId}`);  
+  res.redirect(`/track/${receiptId}`);  
 });
 
 app.get('/create', requiresAuth(), async (req, res) => {
   res.render('create', { 
-    title: 'Create a new email',
+    title: 'Create a new pixel 🕵️‍♀️',
     user: req.oidc.user, 
   });
 });

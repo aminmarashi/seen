@@ -6,14 +6,14 @@
 |        <nav class="mdl-navigation">
 if user
     a(class="mdl-navigation__link mdl-layout--large-screen-only" href="/create") Create
-    a(class="mdl-navigation__link mdl-layout--large-screen-only" href="/stats") Stats
+    a(class="mdl-navigation__link mdl-layout--large-screen-only" href="/track") Track
 |        </nav>
 if receipt
     span(class="mdl-chip" style="margin: 0px 80px 0px 80px; max-width: 30%; overflow: hidden")
         span(class="mdl-chip__text" id="receipt-name")= receipt.name
         ul(class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="receipt-name")
             each r in receipts
-                a(href=`/stats/${r.id}`)
+                a(href=`/track/${r.id}`)
                     li(class="mdl-menu__item")
                         span= r.name
         button(onclick=`copyToClipboard(${receipt.id})` class="mdl-button") Copy
@@ -33,6 +33,6 @@ nav(class="mdl-navigation" style="position: fixed; right: 55px")
 |    <span class="mdl-layout-title">Seen</span>
 |    <nav class="mdl-navigation">
 |        <a class="mdl-navigation__link" href="/create">Create</a>
-|        <a class="mdl-navigation__link" href="/stats">Stats</a>
+|        <a class="mdl-navigation__link" href="/track">Track</a>
 |    </nav>
 |</div>
