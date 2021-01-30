@@ -103,7 +103,7 @@ async function getAllStats(user_id) {
 
 app.get('/', attemptSilentLogin(), async (req, res) => {
   res.render('index', { 
-    title: 'Welcome to seen!',
+    title: 'Seen 👀',
     user: req.oidc.user,
   });
 });

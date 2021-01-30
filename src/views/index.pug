@@ -17,19 +17,20 @@ div(class="mdl-grid")
             div(class="mdl-card__supporting-text" style="padding: 0px 30px 30px 30px; width: unset")
                 if user    
                     h4
-                        | Glad to see you back. Seen 👀 is there to help you
-                        | get information about who opens your emails (or blog post)
-                        | or in general wherever you can paste an invisible pixel.
+                        | Use Seen 👀 to know when your email is read or when a page in your
+                        | website is seen. Just create a pixel and paste it in the email
+                        | you want to be tracked. It is absolutely invisible and will have
+                        | zero visual effects on your email content.
                 else
                     h4
-                        | Seen is a service that allows you to create a tracking pixel, 
-                        | a tiny invisible image which tracks who sees it. You can add
-                        | it to your email to get information about who opened
-                        | your email and when. Join to create your first pixel!
+                        | Seen 👀 is a tracking service for emails and websites.
+                        | Create an invisible tracking pixel and paste it in your
+                        | email to see when someone opens your email. Join now
+                        | to create your first pixel, no credit card required!
             div(class="mdl-card__actions mdl-card--border" style="padding: 10px 30px 10px 30px")
                 if user    
-                    a(href="/create" class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" style="margin-right: 30px") Create a pixel
-                    a(href="/stats" class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect") See the Statistics
+                    a(href="/create" class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" style="margin-right: 30px") New pixel
+                    a(href="/stats" class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect") Track a pixel
                 else
                     a(href="/create" class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect") Join
     div(class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet")
