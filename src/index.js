@@ -174,7 +174,7 @@ app.get('/:image', async (req, res) => {
     return res.status(404).send('Receipt not found');
   }
   
-  if (!req.headers.referer || !req.headers.referer.match(/http:\/\/seen.lit.codes/)) {
+  if (!req.headers.referer || !req.headers.referer.match(/https:\/\/seen.lit.codes/)) {
     await recordReceipt(receipt.id, JSON.stringify(req.headers));
   }
   res.writeHead(200, {
