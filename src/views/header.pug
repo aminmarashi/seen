@@ -34,14 +34,22 @@ if receipts
             span(class="mdl-chip__text" style=`position: relative; width: 20px; height: 20px; background-repeat: no-repeat; background-position: 2px; background-size: 15px 20px; background-image: url("${icon}")`)
                 img(class="invisible-pixel" src=`/${receipt.id}.png`)
 div(class="mdl-layout-spacer mdl-layout--large-screen-only")
-nav(class="mdl-navigation" style="position: fixed; right: 55px")
+nav(class="mdl-navigation")
     if user
-        button(class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab" id="profile-menu")
-            img(style="border-radius: 50%; width: 55px" src=`${user.picture}`)/
-        ul(class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="profile-menu")
-            li(class="mdl-menu__item")= user.nickname
-            a(href="/logout")
-                li(class="mdl-menu__item") Logout
+        div(class="mdl-layout--large-screen-only" style="position: fixed; right: 50px")
+            button(style="min-width: 50px; width: 50px; height: 50px" class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab" id="profile-menu-large")
+                img(style="border-radius: 50%; width: 50px" src=`${user.picture}`)/
+            ul(class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="profile-menu-large")
+                li(class="mdl-menu__item")= user.nickname
+                a(href="/logout")
+                    li(class="mdl-menu__item") Logout
+        div(class="mdl-layout--small-screen-only" style="position: fixed; right: 15px")
+            button(style="min-width: 45px; width: 45px; height: 45px" class="mdl-button mdl-js-button mdl-button--raised mdl-button--fab" id="profile-menu")
+                img(style="border-radius: 50%; width: 45px" src=`${user.picture}`)/
+            ul(class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="profile-menu")
+                li(class="mdl-menu__item")= user.nickname
+                a(href="/logout")
+                    li(class="mdl-menu__item") Logout
     else
         a(href="/login" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored") Login
 |</header>
