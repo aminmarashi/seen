@@ -11,5 +11,5 @@ CREATE TABLE receipts(
 CREATE TABLE receipt_records(
     receipt_id INTEGER REFERENCES receipts(id) NOT NULL,
     record TEXT NOT NULL,
-    timestamp TIMESTAMP DEFAULT current_timestamp
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp
 );

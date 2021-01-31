@@ -99,20 +99,25 @@ script
     |           headers: { 'Content-Type': 'application/json' },
     |           body: JSON.stringify({after: `${date.toISOString()}`}),
     |       }).then(r => r.json()).then(res => {
-    |           const clone = stats.querySelector('tr:nth-last-child(1)').cloneNode(true);
     |           res.stats.forEach(stat => {
     |               date = new Date(stat.timestamp);
-    |               if (date < last) {
+    |               if (date <= last) {
     |                  return;
     |               }
+    |               const firstChild = stats.querySelector('tr:nth-last-child(1)');
+    |               if (!firstChild) {
+    |                   stats.innerHTML = `<tr><td><a></a></td><td></td><td></td><td></td><td></td></tr>`;
+    |               }
+    |               const toClone = stats.querySelector('tr:nth-last-child(1)');
+    |               const clone = !firstChild ? toClone : toClone.cloneNode(true);
     |               const record = JSON.parse(stat.record);
     |               const link = clone.querySelector('a');
     |               link.innerText = stat.receipt_name;
     |               link.href = `/track/${stat.receipt_id}`;
     |               clone.children[1].innerText = record['cf-connecting-ip'] || '';
     |               clone.children[2].innerText = date.toString();
-    |               clone.children[3].innerText = record['user-agent'];
-    |               clone.children[4].innerText = record['referer'];
+    |               clone.children[3].innerText = record['user-agent'] || '';
+    |               clone.children[4].innerText = record['referer'] || '';
     |               stats.appendChild(clone);
     |           })
     |       }, console.error);
