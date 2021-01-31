@@ -8,8 +8,9 @@ if user
     a(class="mdl-navigation__link mdl-layout--large-screen-only" href="/create") Create
     a(class="mdl-navigation__link mdl-layout--large-screen-only" href="/track") Track
 |        </nav>
+- var icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAABACAYAAABVy1Q8AAACf0lEQVRoQ+3bz4tNYRzH8deEIslGSaH8WmikhCxYWFDEShQL8gfYKMVCkYWUlPgLWCFWFiz8SCjFwijyY/KjsLBRyBQGfetM3TndceeZc85tRs93ee7z/X6e7znv55zn3vs5PZqLjdiDdZiLP3iPuziHW01I9zRQdH4x4fUdat/AXnyocw51N7QUtzF7lJP8iGj81SjHdxxWZ0Mz8BgLO6oOH/ASK/A9Ma/t8DobOoGDY5zUMRwZY+6wtHYNTcc8TE0QmISbmDlCTj9Ca9EIn3/GBvxO0PyJd/jWmtPa0DIcxyZMSSj8r6FxV9uKvmLQSlzFnJrqD+IaDuFp1BxqaDOuYFpNQkNlduJiqeZunK9ZZwDbcD0aCryiu1jUdccCvC0VXYK4EdQdX9AbDZ3FvrqrF/VW41Gp9lrca0jvTDT0GnEmm4gL2NVSOPQuF3g0odcfAnG3mFyq/qlYbGXRXqxKnMmdYn2G1o5iK5RS4iGetUnYglml4z9CJPZY5bg/gvABnEyZTQ1j9+N0mzoPsKZ0fDA3lK9QdeYycvmmUJ2ipAoZuRTk4htp7Ji7GbF1et7Uc6ibjXTSquXB2kmkm5/nhuL3tPEc+QrlK9RlPjNyGbmMXLUzkNdQXkPVCErOzshl5JKhqZaQkcvIVSMoOTsjl5FLhqZaQkYuI1eNoOTsjFxGLhmaagkZuYxcNYKSszNyGblkaKolZOQmLHLt7GVhOX5TjYjGs8NOXbaUDoQbK7xo8Xf9/xB90dDRujzT4+CMHI6Gwmv9BPHOwkSOWCLLh2zOYb0M/3M4hCdihPM4/OYvWo3ocaXCgrkdi9v4UMdbo7+Kl0Au4RS+xgT/AgKGEWYFfNScAAAAAElFTkSuQmCC'
 if receipts
-    span(class="mdl-chip" style="margin: 0px 80px 0px 80px; max-width: 30%; overflow: hidden")
+    span(class="mdl-chip" style="margin-left: 80px; max-width: 30%; overflow: hidden")
         if receipt
             span(class="mdl-chip__text" id="receipt-name")= receipt.name
         else
@@ -20,7 +21,13 @@ if receipts
                     li(class="mdl-menu__item")
                         span= r.name
         if receipt
-            button(onclick=`copyToClipboard(${receipt.id})` class="mdl-button") Copy
+            span(class="mdl-chip__text mdl-layout--small-screen-only" style=`position: relative; width: 20px; height: 20px; margin-left: 10px; background-repeat: no-repeat; background-position: 2px; background-size: 15px 20px; background-image: url("${icon}")`)
+                img(class="invisible-pixel" src=`/${receipt.id}.png`)
+            button(onclick=`copyToClipboard(${receipt.id})` class="mdl-button mdl-layout--large-screen-only") Copy
+    span(class="mdl-chip mdl-layout--large-screen-only" style="pointer-events: none; margin: 0px 80px 0px 20px;") 
+        span(class="mdl-chip__text" style="user-select: none; margin-right: 10px") Or, select to copy the pixel
+        span(class="mdl-chip__text" style=`position: relative; width: 20px; height: 20px; background-repeat: no-repeat; background-position: 2px; background-size: 15px 20px; background-image: url("${icon}")`)
+            img(class="invisible-pixel" src=`/${receipt.id}.png`)
 div(class="mdl-layout-spacer mdl-layout--large-screen-only")
 nav(class="mdl-navigation" style="position: fixed; right: 55px")
     if user
