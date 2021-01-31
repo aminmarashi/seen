@@ -30,7 +30,9 @@ if receipts
         span(class="mdl-chip mdl-layout--large-screen-only" style="pointer-events: none; margin: 0px 80px 0px 20px;") 
             span(class="mdl-chip__text" style="user-select: none; margin-right: 10px") Or, select and copy the pixel
             span(class="mdl-chip__text" style=`position: relative; width: 20px; height: 20px; background-repeat: no-repeat; background-position: 2px; background-size: 15px 20px; background-image: url("${icon}")`)
+                |&nbsp;&nbsp;&nbsp;&nbsp;
                 img(class="invisible-pixel" src=`/${receipt.id}.png`)
+                |&nbsp;&nbsp;&nbsp;&nbsp;
 div(class="mdl-layout-spacer mdl-layout--large-screen-only")
 nav(class="mdl-navigation" style="position: fixed; right: 55px")
     if user
