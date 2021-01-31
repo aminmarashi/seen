@@ -97,7 +97,7 @@ script
     = `fetch('/track${receipt ? '/' + receipt.id : ''}', {`
     |           method: "POST",
     |           headers: { 'Content-Type': 'application/json' },
-    |           body: JSON.stringify({after: `${date.toString()}`}),
+    |           body: JSON.stringify({after: `${date.toISOString()}`}),
     |       }).then(r => r.json()).then(res => {
     |           const clone = stats.querySelector('tr:nth-last-child(1)').cloneNode(true);
     |           res.stats.forEach(stat => {
