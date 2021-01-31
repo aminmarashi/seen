@@ -19,6 +19,7 @@ const port = 8080;
 
 app.use(auth(config));
 app.use(express.urlencoded());
+app.use(express.json());
 
 const CONNINFO = {
   host: process.env.POSTGRES_HOST,
@@ -89,15 +90,31 @@ async function createReceipt(user_id, receipt_name) {
 
 async function getReceiptStats(receipt_id) {
   // get receipt stats from the DB
-  return db.any('SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE receipt_id = ${receipt_id}', {
+  return db.any('SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE receipt_id = ${receipt_id} ORDER BY timestamp', {
     receipt_id,
+  });
+}
+
+async function getReceiptStatsAfter(receipt_id, after) {
+  // get receipt stats from the DB
+  return db.any("SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE receipt_id = ${receipt_id} AND date_trunc('second', timestamp) > ${after} ORDER BY timestamp", {
+    receipt_id,
+    after,
   });
 }
 
 async function getAllStats(user_id) {
   // get receipt stats from the DB
-  return db.any('SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id}', {
+  return db.any('SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id} ORDER BY timestamp', {
     user_id,
+  });
+}
+
+async function getAllStatsAfter(user_id, after) {
+  // get receipt stats from the DB
+  return db.any("SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id}  AND date_trunc('second', timestamp) > ${after} ORDER BY timestamp", {
+    user_id,
+    after,
   });
 }
 
@@ -120,6 +137,30 @@ app.get('/track', requiresAuth(), async (req, res) => {
     receipts,
     stats,
     path: '/track',
+  });
+});
+
+app.post('/track', requiresAuth(), async (req, res) => {
+  const { email } = req.oidc.user;
+  const user_id = await getOrCreateUser(email);
+  const stats = await getAllStatsAfter(user_id, req.body.after);
+
+  res.json({
+    stats,
+  });
+});
+
+app.post('/track/:receipt_id', requiresAuth(), async (req, res) => {
+  const { receipt_id } = req.params;
+
+  const receipt = await getReceiptById(receipt_id);
+  if (!receipt) {
+    return res.status(404).send('Receipt not found');
+  }
+  const stats = await getReceiptStatsAfter(receipt.id, req.body.after);
+
+  res.json({
+    stats,
   });
 });
 

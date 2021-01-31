@@ -1,4 +1,4 @@
-|<header class="mdl-layout__header">
+|<header style="user-select: none" class="mdl-layout__header">
 |    <div class="mdl-layout__header-row">
 |        <!-- Title -->
 |        <span class="mdl-layout-title mdl-layout--large-screen-only"><a style="margin-right: 15px; text-decoration:none" href="/">Seen</a></span>
@@ -22,17 +22,22 @@ if receipts
                         span= r.name
         if receipt
             span(class="mdl-chip__text mdl-layout--small-screen-only" style="margin-left: 10px")
-                span(style="user-select: none") ｜Select: 
-                span(style=`position: relative; padding: 10px; border: 1px dashed; background-repeat: no-repeat; background-position: 17px; background-size: 15px 20px; background-image: url("${icon}")`)
-                    |&nbsp;&nbsp;&nbsp;&nbsp;
-                    img(class="invisible-pixel" src=`/${receipt.id}.png`)
-                    |&nbsp;&nbsp;&nbsp;&nbsp;
+                span ｜Select: 
+                span(style="position: relative; padding: 15px 30px 15px 30px")
+                    span(style=`padding: 15px 30px 15px 30px; position: absolute; left: 0px; border: 1px dashed; background-repeat: no-repeat; background-position: 20px; background-size: 15px 20px; background-image: url("${icon}")`)
+                    span(style="user-select: all; position: absolute; left: 0px;")
+                        |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        img(src=`/${receipt.id}.png`)
+                        |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             button(onclick=`copyToClipboard(${receipt.id})` style="margin-left: 1rem" class="mdl-button mdl-button--raised mdl-layout--large-screen-only") Copy
-            span(class="mdl-chip__text" style="user-select: none; margin-right: 10px") &nbsp; | Or, select and copy the pixel:
-            span(class="mdl-chip__text" style=`position: relative; border: 1px dashed; background-repeat: no-repeat; background-position: 8px; background-size: 15px 20px; background-image: url("${icon}")`)
-                |&nbsp;&nbsp;&nbsp;&nbsp;
-                img(class="invisible-pixel" src=`/${receipt.id}.png`)
-                |&nbsp;&nbsp;&nbsp;&nbsp;
+            span(class="mdl-chip__text mdl-layout--large-screen-only" style="margin-left: 10px")
+                span | Or, select and copy the pixel:
+                span(style="color: transparent; position: relative; padding: 15px 30px 15px 30px")
+                    span(style=`padding: 15px 30px 15px 30px; position: absolute; left: 0px; border: 1px dashed; background-repeat: no-repeat; background-position: 20px; background-size: 15px 20px; background-image: url("${icon}")`)
+                    span(style="user-select: all; position: absolute; left: 0px")
+                        |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        img(src=`/${receipt.id}.png`)
+                        |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 div(class="mdl-layout-spacer mdl-layout--large-screen-only")
 nav(class="mdl-navigation")
     if user

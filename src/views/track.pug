@@ -16,7 +16,7 @@ div(class="mdl-grid")
                     td(class="mdl-data-table__cell--non-numeric") Date
                     td(class="mdl-data-table__cell--non-numeric") User Agent
                     td(class="mdl-data-table__cell--non-numeric") Referer
-            tbody
+            tbody(id="stats")
                 each stat in stats
                     tr
                         - var record = JSON.parse(stat.record);
@@ -84,5 +84,35 @@ script.
         });
         return succeed;
     }
+
+- const lastItem = stats[stats.length - 1];
+script
+    |let last;
+    = `let date = new Date('${lastItem.timestamp}');`
+    |setInterval(() => {
+    |last = date;
+    = `fetch('/track${receipt ? '/' + receipt.id : ''}', {`
+    |           method: "POST",
+    |           headers: { 'Content-Type': 'application/json' },
+    |           body: JSON.stringify({after: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}),
+    |       }).then(r => r.json()).then(res => {
+    |           const clone = stats.querySelector('tr:nth-last-child(1)').cloneNode(true);
+    |           res.stats.forEach(stat => {
+    |               date = new Date(stat.timestamp);
+    |               if (date < last) {
+    |                  return;
+    |               }
+    |               const record = JSON.parse(stat.record);
+    |               const link = clone.querySelector('a');
+    |               link.innerText = stat.receipt_name;
+    |               link.href = `/track/${stat.receipt_id}`;
+    |               clone.children[1].innerText = record['cf-connecting-ip'] || '';
+    |               clone.children[2].innerText = date.toString();
+    |               clone.children[3].innerText = record['user-agent'];
+    |               clone.children[4].innerText = record['referer'];
+    |               stats.appendChild(clone);
+    |           })
+    |       }, console.error);
+    |}, 4000);
 include libs.pug
 </html>
