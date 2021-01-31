@@ -27,7 +27,7 @@ if receipts
                     |&nbsp;&nbsp;&nbsp;&nbsp;
                     img(class="invisible-pixel" src=`/${receipt.id}.png`)
                     |&nbsp;&nbsp;&nbsp;&nbsp;
-            button(onclick=`copyToClipboard(${receipt.id})` class="mdl-button mdl-layout--large-screen-only") Copy
+            button(onclick=`copyToClipboard(${receipt.id})` style="margin-left: 1rem" class="mdl-button mdl-button--raised mdl-layout--large-screen-only") Copy
             span(class="mdl-chip__text" style="user-select: none; margin-right: 10px") &nbsp; | Or, select and copy the pixel:
             span(class="mdl-chip__text" style=`position: relative; border: 1px dashed; background-repeat: no-repeat; background-position: 8px; background-size: 15px 20px; background-image: url("${icon}")`)
                 |&nbsp;&nbsp;&nbsp;&nbsp;
