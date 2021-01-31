@@ -88,7 +88,10 @@ script.
 - const lastItem = stats[stats.length - 1];
 script
     |let last;
-    = `let date = new Date('${lastItem.timestamp}');`
+    if lastItem
+        = `let date = new Date('${lastItem.timestamp}');`
+    else
+        |let date = new Date();
     |setInterval(() => {
     |last = date;
     = `fetch('/track${receipt ? '/' + receipt.id : ''}', {`
