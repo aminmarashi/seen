@@ -97,7 +97,7 @@ async function getReceiptStats(receipt_id) {
 
 async function getReceiptStatsAfter(receipt_id, after) {
   // get receipt stats from the DB
-  return db.any("SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE receipt_id = ${receipt_id} AND date_trunc('second', timestamp) > ${after} ORDER BY timestamp", {
+  return db.any("SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE receipt_id = ${receipt_id} AND date_trunc('second', timestamp) > to_timestamp(${after} / 1000.0) ORDER BY timestamp", {
     receipt_id,
     after,
   });
@@ -112,7 +112,7 @@ async function getAllStats(user_id) {
 
 async function getAllStatsAfter(user_id, after) {
   // get receipt stats from the DB
-  return db.any("SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id}  AND date_trunc('second', timestamp) > ${after} ORDER BY timestamp", {
+  return db.any("SELECT receipts.name as receipt_name, receipts.id as receipt_id, receipt_records.* FROM receipt_records LEFT JOIN receipts ON receipt_id = id WHERE user_id = ${user_id}  AND date_trunc('second', timestamp) > to_timestamp(${after} / 1000.0) ORDER BY timestamp", {
     user_id,
     after,
   });
