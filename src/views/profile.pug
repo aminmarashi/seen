@@ -1,11 +1,11 @@
-if user
-    div(class="uk-margin-right")
-        img(style="border-radius: 50%; width: 60px" src=`${user.picture}`)/
-        div(uk-dropdown="pos: bottom-justify")
-            ul(class="uk-nav uk-dropdown-nav")
-                li
-                    a(href="/")= user.nickname
-                li
-                    a(href="/logout") Log out!
-else
-    a(href="/login" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored") Login
+div(class="uk-margin-right")
+    if user
+            img(style="border-radius: 50%; width: 60px" src=`${user.picture}`)/
+            div(uk-dropdown="pos: bottom-justify")
+                ul(class="uk-nav uk-dropdown-nav")
+                    li
+                        a(href="/")= user.nickname
+                    li
+                        a(href="/logout") Log out
+    else
+        a(href="/login" class="button button-default") Log in
