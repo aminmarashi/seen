@@ -3,6 +3,7 @@
 include head.pug
 <body>
 include header.pug
+include copy.pug
 div(class="uk-overflow-auto uk-text-center uk-margin-medium uk-margin-large-left uk-margin-large-right")
     table(class="uk-table uk-table-responsive uk-table-divider uk-table-hover uk-table-striped" style="")
         thead
@@ -25,9 +26,7 @@ div(class="uk-overflow-auto uk-text-center uk-margin-medium uk-margin-large-left
 </body>
 script.
     function onReceiptSelect(select) {
-        if (select.value) {
-            document.location.href = `/track/${select.value}`;
-        }
+        document.location.href = `/track/${select.value}`;
     }
 script.
     function select(elem) {
