@@ -1,20 +1,18 @@
 <!doctype html>
-|<html>
+<html>
 include head.pug
-|   <body>
-|       <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
+<body>
 include header.pug
-|           <main class="mdl-layout__content">
-div(class="mdl-grid")
-    div(class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet")
-    div(class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet")
-        div(class="mdl-card mdl-shadow--6dp" style="width: auto")
-            div(class="mdl-card__title" style="padding: 30px")
+div(class="uk-child-width-expand@s uk-text-center uk-margin-top" uk-grid)
+    div(class="uk-width-1-3@xl uk-width-1-4@l uk-width-1-6@m")
+    div(class="uk-width-expand")
+        div(class="uk-card uk-card-large uk-card-default")
+            div(class="uk-card-header")
                 if user
-                    h2(class="mdl-card__title-text")= `Hey ${user.nickname}!`
+                    h2(class="uk-card-title")= `Hey ${user.nickname}!`
                 else
-                    h2(class="mdl-card__title-text")= `Welcome to Seen 👀!`
-            div(class="mdl-card__supporting-text" style="padding: 0px 30px 30px 30px; width: unset")
+                    h2(class="uk-card-title")= `Welcome to Seen 👀!`
+            div(class="uk-card-body")
                 if user    
                     h4
                         | Use Seen 👀 to know when your email is read or when a page in your
@@ -27,15 +25,13 @@ div(class="mdl-grid")
                         | Create an invisible tracking pixel and paste it in your
                         | email to see when someone opens your email. Join now
                         | to create your first pixel, no credit card required!
-            div(class="mdl-card__actions mdl-card--border" style="padding: 10px 30px 10px 30px")
+            div(class="uk-card-footer")
                 if user    
-                    a(href="/create" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" style="margin-right: 30px") New pixel
-                    a(href="/track" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r") Track a pixel
+                    a(class="uk-button uk-button-default uk-margin-small-right" type="button" href="/create") New pixel
+                    a(class="uk-button uk-button-default uk-margin-small-right" type="button" href="/track") Track a pixel
                 else
-                    a(href="/create" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded") Join
-    div(class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet")
-|           </main>
-|       </div>
-|   </body>
+                    a(class="uk-button uk-button-default uk-margin-small-right" type="button" href="/create") Join
+    div(class="uk-width-1-3@xl uk-width-1-4@l uk-width-1-6@m")
+</body>
 include libs.pug
-|</html>
+</html>

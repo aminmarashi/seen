@@ -25,8 +25,17 @@ if user
 |        </ul>
 |
 |    </div>
+|    <div class="uk-navbar-center">
+form(class="uk-form-stacked uk-margin-left uk-overflow-hidden")
+    div(uk-form-custom="target: #custom-select-label")
+        select(class="uk-select" id="receipt-select" onchange="onReceiptSelect(this)")
+            option(value="") Select a pixel...
+            each r in receipts
+                - const selected = r.id === receipt.id
+                option(value=`${r.id}` selected=selected)= r.name
+        span(class="uk-badge uk-padding-small" id="custom-select-label")
+|    </div>
 |    <div class="uk-navbar-right">
 include profile.pug
 |    </div>
 |</nav>
-// include copy.pug

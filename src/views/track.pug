@@ -1,39 +1,34 @@
 <!doctype html>
 <html>
 include head.pug
-|   <body>
-|       <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
+<body>
 include header.pug
-|           <main class="mdl-layout__content">
-div(class="mdl-grid")
-    div(class="mdl-cell mdl-cell--1-col")
-    div(class="mdl-cell mdl-cell--10-col")
-        table(class="mdl-data-table mdl-js-data-table mdl-shadow--6dp" style="white-space: nowrap; display: block; overflow-x: scroll")
-            thead
+div(class="uk-overflow-auto uk-text-center uk-margin-medium uk-margin-large-left uk-margin-large-right")
+    table(class="uk-table uk-table-responsive uk-table-divider uk-table-hover uk-table-striped" style="")
+        thead
+            tr
+                td(class="uk-preserve-width") Subject
+                td(class="uk-preserve-width") IP Address
+                td(class="uk-text-nowrap") Date
+                td(class="uk-text-nowrap") User Agent
+                td(class="uk-text-nowrap") Referer
+        tbody(id="stats")
+            each stat in stats
                 tr
-                    td(class="mdl-data-table__cell--non-numeric") Name
-                    td(class="mdl-data-table__cell--non-numeric") IP Address
-                    td(class="mdl-data-table__cell--non-numeric") Date
-                    td(class="mdl-data-table__cell--non-numeric") User Agent
-                    td(class="mdl-data-table__cell--non-numeric") Referer
-            tbody(id="stats")
-                each stat in stats
-                    tr
-                        - var record = JSON.parse(stat.record);
-                        td(class="mdl-data-table__cell--non-numeric")
-                            a(href=`${path}/${stat.receipt_id}`)= stat.receipt_name
-                        td(class="mdl-data-table__cell--non-numeric")= record['cf-connecting-ip']
-                        td(class="mdl-data-table__cell--non-numeric")= stat.timestamp
-                        td(class="mdl-data-table__cell--non-numeric")= record['user-agent']
-                        td(class="mdl-data-table__cell--non-numeric")= record['referer']
-    div(class="mdl-cell mdl-cell--1-col")
-|           </main>
-|           <div id="snackbarContainer" class="mdl-js-snackbar mdl-snackbar">
-|              <div class="mdl-snackbar__text"></div>
-|              <button class="mdl-snackbar__action" type="button"></button>
-|           </div>
-|       </div>
-|   </body>
+                    - var record = JSON.parse(stat.record);
+                    td(class="uk-preserve-width")
+                        a(href=`${path}/${stat.receipt_id}`)= stat.receipt_name
+                    td(class="uk-preserve-width")= record['cf-connecting-ip']
+                    td(class="uk-text-nowrap")= stat.timestamp
+                    td(class="uk-text-nowrap")= record['user-agent']
+                    td(class="uk-text-nowrap")= record['referer']
+</body>
+script.
+    function onReceiptSelect(select) {
+        if (select.value) {
+            document.location.href = `/track/${select.value}`;
+        }
+    }
 script.
     function select(elem) {
         var s = window.getSelection()
