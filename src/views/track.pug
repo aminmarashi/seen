@@ -8,8 +8,8 @@ div(class="uk-overflow-auto uk-text-center uk-margin-medium uk-margin-large-left
     table(class="uk-table uk-table-responsive uk-table-divider uk-table-hover uk-table-striped" style="")
         thead
             tr
-                td(class="uk-preserve-width") Subject
-                td(class="uk-preserve-width") IP Address
+                td(class="uk-text-nowrap") Subject
+                td(class="uk-text-nowrap") IP Address
                 td(class="uk-text-nowrap") Date
                 td(class="uk-text-nowrap") User Agent
                 td(class="uk-text-nowrap") Referer
@@ -17,9 +17,9 @@ div(class="uk-overflow-auto uk-text-center uk-margin-medium uk-margin-large-left
             each stat in stats
                 tr
                     - var record = JSON.parse(stat.record);
-                    td(class="uk-preserve-width")
+                    td(class="uk-text-nowrap")
                         a(href=`${path}/${stat.receipt_id}`)= stat.receipt_name
-                    td(class="uk-preserve-width")= record['cf-connecting-ip']
+                    td(class="uk-text-nowrap")= record['cf-connecting-ip']
                     td(class="uk-text-nowrap")= stat.timestamp
                     td(class="uk-text-nowrap")= record['user-agent']
                     td(class="uk-text-nowrap")= record['referer']
