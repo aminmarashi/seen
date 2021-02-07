@@ -7,10 +7,10 @@ if receipt
                 div(class="uk-position-absolute" style="width: calc(100% - 40px); height: 100%; background: rgba(0,0,0,0); z-index: 1000")
                     span(style="position: absolute; top: 2.7rem; left: calc(50% + 10rem); width 5rem; background: rgba(0,0,0,0)")
                         span(class="padding-text")
-                            |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            | 
                         img(src=`/${receipt.id}.png`)
                         span(class="padding-text")
-                            |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            | 
                 div(class="uk-card uk-card-default uk-card-body")
                     span(class="uk-visible@s")
                         button(class="uk-button uk-button-default uk-margin-right uk-position-relative" onclick=`copyToClipboard(${receipt.id})` style="margin-left: 1rem; z-index: 1000" ) Copy
