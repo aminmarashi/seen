@@ -25,15 +25,19 @@ div(class="uk-overflow-auto uk-text-center uk-margin-medium uk-margin-large-left
                     td(class="uk-text-nowrap")= record['referer']
 </body>
 script.
-    document.querySelectorAll('.ua').forEach(ua => {
-        const fa = FaUserAgent.faUserAgent(ua.innerText);
-        ua.innerHTML = `
-            ${fa.browser.html}
-            ${fa.os.html}
-            ${fa.platform.html}
-        `;
-        ua.title = `${fa.browser.name}/${fa.os.name}/${fa.platform.name}`;
-    });
+    function convertUaToIcon() {
+        document.querySelectorAll('.ua').forEach(ua => {
+            if (!ua.innerText.match(/\S+/)) return;
+            const fa = FaUserAgent.faUserAgent(ua.innerText);
+            ua.innerHTML = `
+                ${fa.browser.html}
+                ${fa.os.html}
+                ${fa.platform.html}
+            `;
+            ua.title = `${fa.browser.name}/${fa.os.name}/${fa.platform.name}`;
+        });
+    };
+    convertUaToIcon();
 script.
     function onReceiptSelect(select) {
         document.location.href = `/track/${select.value}`;
@@ -123,6 +127,7 @@ script
     |               clone.children[3].innerText = record['user-agent'] || '';
     |               clone.children[4].innerText = record['referer'] || '';
     |               stats.appendChild(clone);
+    |               convertUaToIcon();
     |           })
     |       }, console.error);
     |}, 4000);
