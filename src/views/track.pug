@@ -11,39 +11,53 @@ div(class="uk-overflow-auto uk-text-center uk-margin-medium uk-margin-large-left
                 td(class="uk-text-nowrap") Subject
                 td(class="uk-text-nowrap") IP Address
                 td(class="uk-text-nowrap") Date
-                td(class="uk-text-nowrap") User Agent
+                td(class="uk-text-nowrap") Client
                 td(class="uk-text-nowrap") Referer
         tbody(id="stats")
             each stat in stats
                 tr
-                    - var record = JSON.parse(stat.record);
+                    - const record = JSON.parse(stat.record);
                     td(class="uk-text-nowrap")
                         a(href=`${path}/${stat.receipt_id}`)= stat.receipt_name
                     td(class="uk-text-nowrap")= record['cf-connecting-ip']
                     td(class="uk-text-nowrap")= stat.timestamp
-                    td(class="uk-text-nowrap")= record['user-agent']
+                    td(class="uk-text-nowrap" class="ua")= record['user-agent']
                     td(class="uk-text-nowrap")= record['referer']
 </body>
+script.
+    function convertUaToIcon() {
+        document.querySelectorAll('.ua').forEach(ua => {
+            if (!ua.innerText.match(/\S+/)) return;
+            const fa = FaUserAgent.faUserAgent(ua.innerText);
+            ua.innerHTML = `
+                ${fa.browser.html}
+                ${fa.os.html}
+                ${fa.platform.html}
+            `;
+            ua.title = `${fa.browser.name}/${fa.os.name}/${fa.platform.name}`;
+        });
+    };
+    convertUaToIcon();
 script.
     function onReceiptSelect(select) {
         document.location.href = `/track/${select.value}`;
     }
 script.
     function select(elem) {
-        var s = window.getSelection()
-        var r = document.createRange();
+        const s = window.getSelection()
+        const r = document.createRange();
         r.selectNode(elem);
         s.addRange(r)
     }
 
     function copyToClipboard(id) {
         // create hidden text element, if it doesn't already exist
-        var targetId = "_hiddenCopyImg_";
-        var origSelectionStart, origSelectionEnd;
+        const targetId = "_hiddenCopyImg_";
+        let origSelectionStart, origSelectionEnd;
         // must use a temporary form element for the selection and copy
         target = document.getElementById(targetId);
         if (!target) {
-            var target = document.createElement("img");
+            const target = document.createElement("img");
             target.style.position = "absolute";
             target.style.left = "-9999px";
             target.style.top = "0";
@@ -52,12 +66,12 @@ script.
         }
         target.src = `/${id}.png`;
         // select the content
-        var currentFocus = document.activeElement;
+        const currentFocus = document.activeElement;
         target.focus();
         select(target)
 
         // copy the selection
-        var succeed;
+        let succeed;
         try {
                 succeed = document.execCommand("copy");
         } catch(e) {
@@ -113,6 +127,7 @@ script
     |               clone.children[3].innerText = record['user-agent'] || '';
     |               clone.children[4].innerText = record['referer'] || '';
     |               stats.appendChild(clone);
+    |               convertUaToIcon();
     |           })
     |       }, console.error);
     |}, 4000);
